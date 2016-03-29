@@ -9,7 +9,6 @@
   "files":[
     "demo/node_modules/tns-core-modules/tns-core-modules.d.ts",
     "platforms/ios/ios.d.ts",
-    "imagecropper.d.ts",
     "imagecropper.android.ts",
     "imagecropper.ios.ts"
   ],

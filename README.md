@@ -2,7 +2,7 @@
 @Author: Brian Thurlow <bthurlow>
 @Date:   03/29/2016 03:41:05 PM
 @Last modified by:   bthurlow
-@Last modified time: 03/29/2016 04:21:08 PM
+@Last modified time: 03/29/2016 04:24:04 PM
 -->
 
 
@@ -32,7 +32,7 @@ var icModule = require("nativescript-imagecropper");
 ```
 ### Methods
 
-show(ImageSource): Returns a cropped imageSource
+show(ImageSource): Returns a cropped ImageSource
 ```js
 var cropper = new icModule.ImageCropper();
 cropper.show(picture).then(function(args){
@@ -43,7 +43,7 @@ cropper.show(picture).then(function(args){
 });
 ```
 
-show(ImageSource,Options): Returns a cropped and resized imageSource
+show(ImageSource,Options): Returns a cropped and resized ImageSource
 ```js
 var cropper = new icModule.ImageCropper();
 cropper.show(picture,{width:300,height:300}).then(function(args){
@@ -63,5 +63,5 @@ cropper.show(picture,{width:300,height:300}).then(function(args){
   * Success
   * Cancelled
   * Error
-* image: imageSource.ImageSource;
+* image: ImageSource;
   * Returns null if there was an error or was cancelled.

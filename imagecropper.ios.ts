@@ -36,20 +36,20 @@ class TOCropViewControllerDelegateImpl extends NSObject {
     public static ObjCProtocols = [TOCropViewControllerDelegate];
 
     public static initWithOwner(owner: WeakRef<TOCropViewController>) : TOCropViewControllerDelegateImpl {
-      console.log("TOCropViewControllerDelegateImpl.initWithOwner");
+      // console.log("TOCropViewControllerDelegateImpl.initWithOwner");
       let handler = <TOCropViewControllerDelegateImpl>TOCropViewControllerDelegateImpl.new();
       handler._owner = owner;
       return handler;
     }
 
     public initResolveReject(resolve:any,reject:any):void{
-      console.log("TOCropViewControllerDelegateImpl.initResolveReject");
+      // console.log("TOCropViewControllerDelegateImpl.initResolveReject");
       this._resolve = resolve;
       this._reject = reject;
     }
 
-    public cropViewControllerDidCropToImageWithRectAngle(cropViewController:TOCropViewController, image:UIImage, cropRect:CGRect, angle:number) : Promise<Result>{
-      console.log("TOCropViewControllerDelegateImpl.cropViewControllerDidCropToImageWithRectAngle");
+    public cropViewControllerDidCropToImageWithRectAngle(cropViewController:TOCropViewController, image:UIImage, cropRect:CGRect, angle:number) : void{
+      // console.log("TOCropViewControllerDelegateImpl.cropViewControllerDidCropToImageWithRectAngle");
       cropViewController.dismissViewControllerAnimatedCompletion(true,null);
       if(image){
         var imgSrc = new imageSource.ImageSource();
@@ -91,25 +91,25 @@ class TOCropViewControllerDelegateImpl extends NSObject {
         }
       }
       CFRelease(cropViewController.delegate);
-      return;
+      // return;
     }
 
-    public cropViewControllerDidFinishCancelled(cropViewController:TOCropViewController,cancelled:boolean) : Promise<Result>{
-      console.log("TOCropViewControllerDelegateImpl.cropViewControllerDidFinishCancelled");
+    public cropViewControllerDidFinishCancelled(cropViewController:TOCropViewController,cancelled:boolean) : void{ //Promise<Result>
+      // console.log("TOCropViewControllerDelegateImpl.cropViewControllerDidFinishCancelled");
       cropViewController.dismissViewControllerAnimatedCompletion(true,null);
       this._resolve({
         response:"Cancelled",
         image:null
       });
       CFRelease(cropViewController.delegate);
-      return;
+      // return;
     }
 }
 
 export class ImageCropper{
-    public show(image:imageSource.ImageSource, options?:OptionsCommon){
-      console.log("ImageCropper.show");
-      return new Promise(function(resolve,reject){
+    public show(image:imageSource.ImageSource, options?:OptionsCommon):Thenable<Result>{
+      // console.log("ImageCropper.show");
+      return new Promise<Result>((resolve,reject) => {
         _options = options;
         if(image.ios){
           var viewController = TOCropViewController.alloc().initWithImage(image.ios);
@@ -131,7 +131,7 @@ export class ImageCropper{
           });
         }
         else{
-          this.reject({
+          reject({
             response:"Error",
             image:null
           });
