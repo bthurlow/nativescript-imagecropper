@@ -1,0 +1,7 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="pageLoaded">
+  <StackLayout>
+    <Label text="nativescript-imagecropper demo" class="title" textWrap="true"/>
+    <Button text="Camera" tap="tapCameraAction" />
+    <Button text="Camera with Resize" tap="tapCameraActionResize" />
+  </StackLayout>
+</Page>

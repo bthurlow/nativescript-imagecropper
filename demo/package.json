@@ -1,0 +1,22 @@
+{
+  "description": "nativescript-imagecropper demo app",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": {
+    "type": "MIT",
+    "url": ""
+  },
+  "readmeFilename": "",
+  "nativescript": {
+    "id": "org.nativescript.demo",
+    "tns-ios": {
+      "version": "1.7.0"
+    }
+  },
+  "dependencies": {
+    "nativescript-imagecropper": "file:..",
+    "tns-core-modules": "1.7.1"
+  }
+}
