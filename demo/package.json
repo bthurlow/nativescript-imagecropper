@@ -8,7 +8,7 @@
 		"type": "MIT",
 		"url": "https://github.com/bthurlow/nativescript-imagecropper/tree/master/demo/LICENSE"
 	},
-	"readmeFilename": "",
+	"readmeFilename":"README.md",
 	"nativescript": {
 		"id": "org.nativescript.demo",
 		"tns-ios": {
