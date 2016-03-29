@@ -18,18 +18,18 @@
   },
   "repository":{
     "type":"git",
-    "url":""
+    "url":"https://github.com/bthurlow/nativescript-imagecropper"
   },
   "keywords":[],
   "author":"bthurlow",
   "bugs":{
-    "url":""
+    "url":"https://github.com/bthurlow/nativescript-imagecropper/issues"
   },
   "license":{
     "type":"MIT",
-    "url":""
+    "url":"https://github.com/bthurlow/nativescript-imagecropper/blob/master/LICENSE"
   },
-  "homepage":"",
+  "homepage":"https://github.com/bthurlow/nativescript-imagecropper",
   "readmeFilename":"README.md",
   "devDependencies":{
     "typescript":"^1.8.7"
