@@ -2,7 +2,7 @@
 @Author: Brian Thurlow <bthurlow>
 @Date:   03/29/2016 03:41:05 PM
 @Last modified by:   bthurlow
-@Last modified time: 03/29/2016 04:16:55 PM
+@Last modified time: 03/29/2016 04:21:08 PM
 -->
 
 
@@ -59,9 +59,9 @@ cropper.show(picture,{width:300,height:300}).then(function(args){
 * height:<number> The height of the image you would like returned.
 
 ### Returned Result Arguments
-*response: string;
-..* Success
-..* Cancelled
-..* Error
-*image: imageSource.ImageSource;
-..* Returns null if there was an error or was cancelled.
+* response: string;
+  * Success
+  * Cancelled
+  * Error
+* image: imageSource.ImageSource;
+  * Returns null if there was an error or was cancelled.
