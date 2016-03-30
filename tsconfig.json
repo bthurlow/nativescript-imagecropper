@@ -8,12 +8,14 @@
   },
   "files":[
     "demo/node_modules/tns-core-modules/tns-core-modules.d.ts",
-    "platforms/ios/ios.d.ts",
+    "node_modules/ios.d.ts",
+    "node_modules/android17.d.ts",
     "imagecropper.android.ts",
     "imagecropper.ios.ts"
   ],
   "compileOnSave":false,
   "exclude":[
-    "./platforms/**/*.ts"
+    "./platforms/**/*.ts",
+    "./node_modules/*.ts"
   ]
 }

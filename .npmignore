@@ -1,3 +1,4 @@
 demo/
 *.png
 *.log
+node_modules/
