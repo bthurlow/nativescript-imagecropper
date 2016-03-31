@@ -20,7 +20,15 @@
     "type":"git",
     "url":"https://github.com/bthurlow/nativescript-imagecropper"
   },
-  "keywords":[],
+  "keywords":[
+    "NativeScript",
+    "image",
+    "crop",
+    "cropping",
+    "cropper",
+    "TOCropViewController",
+    "android-cropimage"
+  ],
   "author":"bthurlow",
   "bugs":{
     "url":"https://github.com/bthurlow/nativescript-imagecropper/issues"
