@@ -1,25 +1,25 @@
 {
-	"description": "nativescript-imagecropper demo app",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/bthurlow/nativescript-imagecropper/tree/master/demo"
-	},
-	"license": {
-		"type": "MIT",
-		"url": "https://github.com/bthurlow/nativescript-imagecropper/tree/master/demo/LICENSE"
-	},
-	"readmeFilename":"README.md",
-	"nativescript": {
-		"id": "org.nativescript.demo",
-		"tns-ios": {
-			"version": "1.7.0"
-		},
-		"tns-android": {
-			"version": "1.7.1"
-		}
-	},
-	"dependencies": {
-		"nativescript-imagecropper": "file:..",
-		"tns-core-modules": "1.7.1"
-	}
+  "description": "nativescript-imagecropper demo app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bthurlow/nativescript-imagecropper/tree/master/demo"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/bthurlow/nativescript-imagecropper/tree/master/demo/LICENSE"
+  },
+  "readmeFilename": "README.md",
+  "nativescript": {
+    "id": "org.nativescript.demo",
+    "tns-ios": {
+      "version": "1.7.0"
+    },
+    "tns-android": {
+      "version": "1.7.1"
+    }
+  },
+  "dependencies": {
+    "nativescript-imagecropper": "file:..",
+    "tns-core-modules": "1.7.1"
+  }
 }

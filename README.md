@@ -9,20 +9,35 @@
 
 # A {N} Image Cropping Plugin
 
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](http://choosealicense.com/licenses/mit/)
+
 ## Notes
 
 iOS 8+
 
-Android 17+??
+Android 17+
 
 ###Based on
 [TOCropViewController](https://github.com/TimOliver/TOCropViewController) for iOS
 
-xx for Android
+[android-cropimage](https://github.com/lvillani/android-cropimage) for Android
 
 ## Installation
 
 Run `tns plugin add nativescript-imagecropper`
+
+## Android Install Notes
+
+This plugin is designed according to {N} 2.0 Specs. For Android, you will need to modify the AndroidManifest.xml file.
+
+Add the following to the AndroidManifest.xml
+```xml
+<manifest>
+  <application>
+    <activity android:name="com.android.camera.CropImage"/>
+  </application>
+</manifest>
+```
 
 ### Usage
 

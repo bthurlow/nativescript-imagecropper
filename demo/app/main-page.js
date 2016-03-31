@@ -1,20 +1,27 @@
+/**
+* @Author: Brian Thurlow
+* @Date:   03/29/2016 04:03:50 PM
+* @Last modified by:   Brian Thurlow
+* @Last modified time: 03/30/2016 02:04:35 PM
+*/
+
+
+
 var cameraModule = require("camera");
 var icModule = require("nativescript-imagecropper");
 
+var _page;
 function pageLoaded(args) {
-    var page = args.object;
+    _page = args.object;
     // page.bindingContext = vmModule.mainViewModel;
 }
 exports.pageLoaded = pageLoaded;
 
 exports.tapCameraAction = function(args){
-  console.log("tapCameraAction");
   cameraModule.takePicture({width:300,height:300,keepAspectRatio:true})
   .then(function(picture){
-    console.log("Picture Success!");
     var cropper = new icModule.ImageCropper();
     cropper.show(picture).then(function(args){
-      console.log("Cropper Then");
       console.log(JSON.stringify(args));
     })
     .catch(function(e){
@@ -26,13 +33,10 @@ exports.tapCameraAction = function(args){
   })
 };
 exports.tapCameraActionResize = function(args){
-  console.log("tapCameraAction");
   cameraModule.takePicture({width:300,height:300,keepAspectRatio:true})
   .then(function(picture){
-    console.log("Picture Success!");
     var cropper = new icModule.ImageCropper();
     cropper.show(picture,{width:100,height:100}).then(function(args){
-      console.log("Cropper Then");
       console.log(JSON.stringify(args));
     })
     .catch(function(e){

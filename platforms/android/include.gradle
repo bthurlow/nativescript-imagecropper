@@ -1,0 +1,10 @@
+repositories {
+  mavenCentral()
+
+  maven {
+      url 'http://lorenzo.villani.me/android-cropimage/'
+  }
+}
+dependencies {
+    compile 'me.villani.lorenzo.android:android-cropimage:1.1.+'
+}

@@ -1,7 +1,7 @@
 {
   "name":"nativescript-imagecropper",
-  "version":"0.0.1",
-  "description":"A image cropper based on TOCropViewController for iOS and xx for Android",
+  "version":"0.0.2",
+  "description":"A image cropper based on TOCropViewController for iOS and android-cropimage for Android",
   "main":"imagecropper.js",
   "nativescript":{
     "platforms":{
@@ -11,10 +11,10 @@
   },
   "scripts":{
     "build": "tsc",
+    "preparedemo": "npm run build && cd demo && tns plugin remove nativescript-imagecropper && tns plugin add .. && tns install",
+    "setup": "cd demo && npm install && cd .. && npm run build && cd demo && tns plugin add .. && cd ..",
     "demo.ios": "npm run preparedemo; cd demo; tns deploy ios --emulator --justlaunch",
-		"demo.android": "npm run preparedemo; cd demo; tns run android",
-		"preparedemo": "npm run build; cd demo; tns plugin remove nativescript-imagecropper; tns plugin add ..; tns install",
-		"setup": "cd demo; npm install; cd ..; npm run build; cd demo; tns plugin add ..; cd .."
+		"demo.android": "npm run preparedemo && cd demo && tns run android"
   },
   "repository":{
     "type":"git",

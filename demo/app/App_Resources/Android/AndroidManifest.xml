@@ -36,5 +36,6 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="com.tns.ErrorReportActivity"/>
+		<activity android:name="com.android.camera.CropImage"/>
 	</application>
 </manifest>
