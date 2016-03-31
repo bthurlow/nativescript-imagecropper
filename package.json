@@ -1,7 +1,7 @@
 {
   "name":"nativescript-imagecropper",
   "version":"0.0.2",
-  "description":"A image cropper based on TOCropViewController for iOS and android-cropimage for Android",
+  "description":"A image cropper based on TOCropViewController for iOS and uCrop for Android",
   "main":"imagecropper.js",
   "nativescript":{
     "platforms":{

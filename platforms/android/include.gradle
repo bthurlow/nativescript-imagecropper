@@ -1,10 +1,6 @@
 repositories {
-  mavenCentral()
-
-  maven {
-      url 'http://lorenzo.villani.me/android-cropimage/'
-  }
+  jcenter()
 }
 dependencies {
-    compile 'me.villani.lorenzo.android:android-cropimage:1.1.+'
+  compile 'com.yalantis:ucrop:1.3.+'
 }

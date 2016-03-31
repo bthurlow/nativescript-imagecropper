@@ -124,9 +124,11 @@ export class ImageCropper{
           page.presentViewControllerAnimatedCompletion(viewController,true,function(){
             //Set Fixed Crop Size
             if(_options && _options.width && _options.height){
+              var gcd = this._gcd(_options.width,_options.height);
+
               viewController.toolbar.clampButtonHidden = true;
               // viewController.toolbar.setNeedsLayout();
-              viewController.cropView.setAspectLockEnabledWithAspectRatioAnimated(CGSizeMake(_options.width,_options.height),false);
+              viewController.cropView.setAspectLockEnabledWithAspectRatioAnimated(CGSizeMake(_options.width/gcd,_options.height/gcd),false);
             }
           });
         }
@@ -137,5 +139,12 @@ export class ImageCropper{
           });
         }
       });
+    }
+    private _gcd(width:number, height:number):number{
+      if(height == 0){
+        return width;
+      }else{
+        return this._gcd(height, width % height);
+      }
     }
 }

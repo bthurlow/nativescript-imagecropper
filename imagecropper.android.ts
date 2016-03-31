@@ -6,18 +6,18 @@ import {OptionsCommon} from './interfaces';
 import {Result} from './interfaces';
 
 declare module com{
-  export module android {
-    export module camera{
-      export class CropImageIntentBuilder{
-        public constructor(outputX:number,outputY:number,saveUri:any);
-        public constructor(aspectX,aspectY,outputX,outputY,saveUri:any);
-        public setBitmap(bitmap:any):CropImageIntentBuilder;
-        public setOutlineColor(color:number):CropImageIntentBuilder;
-        public getIntent(context:any):any;
-        public setSourceImage(imageUri:any):CropImageIntentBuilder;
-        public setOutputQuality(outputQuality:number):CropImageIntentBuilder;
-        public setScale(scale:boolean):CropImageIntentBuilder;
-        public setScaleUpIfNeeded(scaleUpIfNeeded:boolean):CropImageIntentBuilder;
+  export module yalantis{
+    export module ucrop{
+      export class UCrop{
+        public static REQUEST_CROP;
+        public static RESULT_ERROR;
+        public static of(source:android.net.Uri, destination:android.net.Uri):UCrop;
+        public withAspectRatio(x:number, y:number):UCrop;
+        public useSourceImageAspectRatio():UCrop;
+        public withMaxResultSize(width:number, height:number):UCrop;
+        public start(activity:android.app.Activity):void;
+        public static getOutput(intent:android.content.Intent):android.net.Uri;
+        public static getError(intent:android.content.Intent):java.lang.Throwable;
       }
     }
   }
@@ -25,6 +25,7 @@ declare module com{
 
 var _options:OptionsCommon;
 var ctx:android.content.Context = application.android.context;
+var UCrop = com.yalantis.ucrop.UCrop;
 
 export class ImageCropper{
     public show(image:imageSource.ImageSource, options?:OptionsCommon):Thenable<Result>{
@@ -32,65 +33,87 @@ export class ImageCropper{
         try{
           _options = options;
           if(image.android){
-            var tempPath:string = this._storeImageSource(image),
-              _that = this,
-             REQUEST_CROP_PICTURE = 2,
-             previousResult = application.android.onActivityResult,
-             croppedImageFile:java.io.File = new java.io.File(ctx.getFilesDir(), "temp.jpg"),
-             croppedImage:android.net.Uri = android.net.Uri.fromFile(croppedImageFile),
-             cropImage;
+            var _that = this;
+            var sourcePathTemp:string = this._storeImageSource(image);
+            var folder:fs.Folder = fs.knownFolders.temp();
+            var destinationPathTemp:string = fs.path.join(folder.path,"destTemp.jpg");
 
-             if(_options && _options.width && _options.height){
-               cropImage = new com.android.camera.CropImageIntentBuilder(_options.width,_options.height,croppedImage);
-             }
-             else{
-               var bmp:android.graphics.Bitmap = image.android;
-               cropImage = new com.android.camera.CropImageIntentBuilder(bmp.getWidth(), bmp.getHeight(),croppedImage);
-              }
-
-            cropImage.setOutlineColor(0xFF03A9F4);
-
-            if(tempPath == null){
-              this._cleanFiles(null);
+            if(sourcePathTemp == null){
+              this._cleanFiles();
               reject({
                 response:"Error",
                 image:null
               });
             }
 
-            var tempUri:android.net.Uri = android.net.Uri.parse("file://"+tempPath); //Fix our path that comes from {N} file-system.
-            cropImage.setSourceImage(tempUri);
+            var sourcePath:android.net.Uri = android.net.Uri.parse("file://"+sourcePathTemp); //Fix our path that comes from {N} file-system.
+            var destinationPath:android.net.Uri = android.net.Uri.parse("file://"+destinationPathTemp); //Fix our path that comes from {N} file-system.
 
-            application.android.onActivityResult = function(requestCode,resultCode,data){
-              if((requestCode == REQUEST_CROP_PICTURE) && (resultCode == android.app.Activity.RESULT_OK)) {
+            application.android.on(application.AndroidApplication.activityResultEvent,onResult);
+
+            function onResult(args){
+              var requestCode = args.requestCode;
+              var resultCode = args.resultCode;
+              var data = args.intent;
+
+              if(resultCode == android.app.Activity.RESULT_OK && requestCode == UCrop.REQUEST_CROP){
+                var resultUri:android.net.Uri = UCrop.getOutput(data);
                 var is:imageSource.ImageSource = new imageSource.ImageSource();
-                is.setNativeSource(android.graphics.BitmapFactory.decodeFile(croppedImageFile.getAbsolutePath()));
-
-                _that._cleanFiles(croppedImageFile.getAbsolutePath());
-
+                is.setNativeSource(android.graphics.BitmapFactory.decodeFile(resultUri.getPath()));
+                _that._cleanFiles();
+                application.android.off(application.AndroidApplication.activityResultEvent, onResult);
                 resolve({
                   response:"Success",
                   image:is
                 });
+                return;
               }
-              else if((requestCode == REQUEST_CROP_PICTURE) && (resultCode == android.app.Activity.RESULT_CANCELED)) {
-                _that._cleanFiles(null);
-
+              else if(resultCode == android.app.Activity.RESULT_CANCELED && requestCode == UCrop.REQUEST_CROP){
+                _that._cleanFiles();
+                application.android.off(application.AndroidApplication.activityResultEvent, onResult);
                 resolve({
                   response:"Cancelled",
                   image:null
                 });
+                return;
               }
+              else if(resultCode == UCrop.RESULT_ERROR){
+                _that._cleanFiles();
+                var cropError:java.lang.Throwable = UCrop.getError(data);
+                console.log(cropError.getMessage());
+                application.android.off(application.AndroidApplication.activityResultEvent, onResult);
+                reject({
+                  response:"Error",
+                  image:null
+                });
+                return;
+              }
+            };
+
+            if(_options && _options.width && _options.height){
+              var gcd = this._gcd(_options.width,_options.height);
+              // console.log("gcd:" + gcd.toString());
+
+              UCrop.of(sourcePath, destinationPath)
+              .withAspectRatio(_options.width/gcd,_options.height/gcd)
+              .withMaxResultSize(_options.width,_options.height)
+              .start(this._getContext());
             }
-            this._getContext().startActivityForResult(cropImage.getIntent(ctx), REQUEST_CROP_PICTURE);
+            else{
+              UCrop.of(sourcePath, destinationPath)
+              // .useSourceImageAspectRatio()
+              .start(this._getContext());
+            }
           }
           else{
+            application.android.off(application.AndroidApplication.activityResultEvent, onResult);
             reject({
               response:"Error",
               image:null
             });
           }
         } catch(e){
+          application.android.off(application.AndroidApplication.activityResultEvent, onResult);
           reject({
             response:"Error",
             image:null
@@ -99,6 +122,13 @@ export class ImageCropper{
       });
     }
 
+    private _gcd(width:number, height:number):number{
+      if(height == 0){
+        return width;
+      }else{
+        return this._gcd(height, width % height);
+      }
+    }
     private _storeImageSource(image:imageSource.ImageSource):string{
       var folder:fs.Folder = fs.knownFolders.temp();
       var path = fs.path.join(folder.path,"temp.jpg");
@@ -110,12 +140,7 @@ export class ImageCropper{
         return null;
       }
     }
-    private _cleanFiles(croppedImageUri:string):void{
-      //Remove Cropped Image
-      if(croppedImageUri !== null){
-        var file = fs.File.fromPath(croppedImageUri);
-        file.remove();
-      }
+    private _cleanFiles():void{
       //Clear Temp
       var folder:fs.Folder = fs.knownFolders.temp();
       folder.clear();

@@ -20,7 +20,7 @@ Android 17+
 ###Based on
 [TOCropViewController](https://github.com/TimOliver/TOCropViewController) for iOS
 
-[android-cropimage](https://github.com/lvillani/android-cropimage) for Android
+[uCrop](https://github.com/Yalantis/uCrop) for Android
 
 ## Installation
 
@@ -34,7 +34,7 @@ Add the following to the AndroidManifest.xml
 ```xml
 <manifest>
   <application>
-    <activity android:name="com.android.camera.CropImage"/>
+    <activity android:name="com.yalantis.ucrop.UCropActivity" android:screenOrientation="portrait"/>
   </application>
 </manifest>
 ```
