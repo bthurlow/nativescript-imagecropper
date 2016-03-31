@@ -10,6 +10,8 @@
 # A {N} Image Cropping Plugin
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](http://choosealicense.com/licenses/mit/)
 [![npm](https://img.shields.io/npm/v/nativescript-imagecropper.svg)](https://www.npmjs.com/package/nativescript-imagecropper)
+[![npm](https://img.shields.io/npm/dt/nativescript-imagecropper.svg)](https://www.npmjs.com/package/nativescript-imagecropper)
+[![GitHub release](https://img.shields.io/github/release/bthurlow/nativescript-imagecropper.svg)](https://github.com/bthurlow/nativescript-imagecropper)
 
 ## Notes
 
