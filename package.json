@@ -33,10 +33,7 @@
   "bugs":{
     "url":"https://github.com/bthurlow/nativescript-imagecropper/issues"
   },
-  "license":{
-    "type":"MIT",
-    "url":"https://github.com/bthurlow/nativescript-imagecropper/blob/master/LICENSE"
-  },
+  "license": "MIT",
   "homepage":"https://github.com/bthurlow/nativescript-imagecropper",
   "readmeFilename":"README.md",
   "devDependencies":{

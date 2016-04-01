@@ -4,10 +4,7 @@
     "type": "git",
     "url": "https://github.com/bthurlow/nativescript-imagecropper/tree/master/demo"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/bthurlow/nativescript-imagecropper/tree/master/demo/LICENSE"
-  },
+  "license": "MIT",
   "readmeFilename": "README.md",
   "nativescript": {
     "id": "org.nativescript.demo",
