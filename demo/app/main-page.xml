@@ -3,5 +3,6 @@
     <Label text="nativescript-imagecropper demo" class="title" textWrap="true"/>
     <Button text="Camera" tap="tapCameraAction" />
     <Button text="Camera with Resize" tap="tapCameraActionResize" />
+    <Image id="image1" visibility="collapsed" />
   </StackLayout>
 </Page>

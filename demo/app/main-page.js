@@ -10,10 +10,11 @@
 var cameraModule = require("camera");
 var icModule = require("nativescript-imagecropper");
 
-var _page;
+var _page,_image1;
 function pageLoaded(args) {
     _page = args.object;
     // page.bindingContext = vmModule.mainViewModel;
+    _image1 = _page.getViewById("image1");
 }
 exports.pageLoaded = pageLoaded;
 
@@ -23,6 +24,13 @@ exports.tapCameraAction = function(args){
     var cropper = new icModule.ImageCropper();
     cropper.show(picture).then(function(args){
       console.log(JSON.stringify(args));
+      if(args.image !== null){
+        _image1.visibility = "visible";
+        _image1.imageSource = args.image;
+      }
+      else{
+        _image1.visibility = "collapsed";
+      }
     })
     .catch(function(e){
       console.log(e);
@@ -38,6 +46,13 @@ exports.tapCameraActionResize = function(args){
     var cropper = new icModule.ImageCropper();
     cropper.show(picture,{width:100,height:100}).then(function(args){
       console.log(JSON.stringify(args));
+      if(args.image !== null){
+        _image1.visibility = "visible";
+        _image1.imageSource = args.image;
+      }
+      else{
+        _image1.visibility = "collapsed";
+      }
     })
     .catch(function(e){
       console.log(e);
