@@ -49,12 +49,11 @@ export class ImageCropper{
             var sourcePath:android.net.Uri = android.net.Uri.parse("file://"+sourcePathTemp); //Fix our path that comes from {N} file-system.
             var destinationPath:android.net.Uri = android.net.Uri.parse("file://"+destinationPathTemp); //Fix our path that comes from {N} file-system.
 
-            application.android.on(application.AndroidApplication.activityResultEvent,onResult);
-
             function onResult(args){
               var requestCode = args.requestCode;
               var resultCode = args.resultCode;
               var data = args.intent;
+              // var _that = this;
 
               if(resultCode == android.app.Activity.RESULT_OK && requestCode == UCrop.REQUEST_CROP){
                 var resultUri:android.net.Uri = UCrop.getOutput(data);
@@ -90,6 +89,8 @@ export class ImageCropper{
               }
             };
 
+            application.android.on(application.AndroidApplication.activityResultEvent,onResult);
+
             if(_options && _options.width && _options.height){
               var gcd = this._gcd(_options.width,_options.height);
               // console.log("gcd:" + gcd.toString());
@@ -106,14 +107,14 @@ export class ImageCropper{
             }
           }
           else{
-            application.android.off(application.AndroidApplication.activityResultEvent, onResult);
+            // application.android.off(application.AndroidApplication.activityResultEvent, this.onResult);
             reject({
               response:"Error",
               image:null
             });
           }
         } catch(e){
-          application.android.off(application.AndroidApplication.activityResultEvent, onResult);
+          // application.android.off(application.AndroidApplication.activityResultEvent, this.onResult);
           reject({
             response:"Error",
             image:null
@@ -129,6 +130,7 @@ export class ImageCropper{
         return this._gcd(height, width % height);
       }
     }
+
     private _storeImageSource(image:imageSource.ImageSource):string{
       var folder:fs.Folder = fs.knownFolders.temp();
       var path = fs.path.join(folder.path,"temp.jpg");
@@ -140,11 +142,13 @@ export class ImageCropper{
         return null;
       }
     }
+
     private _cleanFiles():void{
       //Clear Temp
       var folder:fs.Folder = fs.knownFolders.temp();
       folder.clear();
     }
+
     private _getContext():android.app.Activity{
       return application.android.foregroundActivity;
     }

@@ -2,5 +2,5 @@ repositories {
   jcenter()
 }
 dependencies {
-  compile 'com.yalantis:ucrop:1.3.+'
+  compile 'com.yalantis:ucrop:1.3.2'
 }
