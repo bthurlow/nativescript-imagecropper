@@ -1,6 +1,15 @@
 repositories {
   jcenter()
 }
+
 dependencies {
   compile 'com.yalantis:ucrop:1.3.2'
+}
+
+android {
+    productFlavors {
+        "nic" {
+            dimension "nic"
+        }
+    }
 }
