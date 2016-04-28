@@ -109,6 +109,7 @@ class TOCropViewControllerDelegateImpl extends NSObject {
 export class ImageCropper{
     public show(image:imageSource.ImageSource, options?:OptionsCommon):Thenable<Result>{
       // console.log("ImageCropper.show");
+      let _that = this;
       return new Promise<Result>((resolve,reject) => {
         _options = options;
         if(image.ios){
@@ -124,7 +125,7 @@ export class ImageCropper{
           page.presentViewControllerAnimatedCompletion(viewController,true,function(){
             //Set Fixed Crop Size
             if(_options && _options.width && _options.height){
-              var gcd = this._gcd(_options.width,_options.height);
+              var gcd = _that._gcd(_options.width,_options.height);
 
               viewController.toolbar.clampButtonHidden = true;
               // viewController.toolbar.setNeedsLayout();
