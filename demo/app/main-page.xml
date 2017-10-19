@@ -4,6 +4,6 @@
     <Label text="nativescript-imagecropper demo" class="title" textWrap="true"/>
     <Button text="Camera" tap="{{ tapCameraAction }}" />
     <Button text="Camera with Resize" tap="{{ tapCameraActionResize }}" />
-    <Image src="{{ imageSource }}" />
+    <Image id="croppedImage" />
   </StackLayout>
 </Page>

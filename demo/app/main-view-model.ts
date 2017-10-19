@@ -4,17 +4,20 @@ import * as camera from "nativescript-camera";
 import * as permissions from "nativescript-permissions";
 import { Image } from "tns-core-modules/ui/image";
 import * as frameModule from "tns-core-modules/ui/frame";
+import * as imageSource from 'tns-core-modules/image-source';
 
 declare var android: any;
 
 export class ImageCropperModel extends Observable {
   private imageCropper: ImageCropper;
-  private imageSource: any;
+  private imageSource: imageSource.ImageSource;
+  private croppedImage;
 
   constructor() {
     super();
 
     this.imageCropper = new ImageCropper();
+    this.croppedImage = frameModule.topmost().getViewById("croppedImage");
   }
 
   tapCameraAction = function() {
@@ -23,18 +26,18 @@ export class ImageCropperModel extends Observable {
         .then(() => {
           camera.takePicture({width:300,height:300,keepAspectRatio:true})
             .then((imageAsset) => {
-
-                console.log("Got the image asset");
-                this.imageCropper.show(imageAsset).then((args) => {
-                  console.dir(args);
-                  if(args.image !== null){
-                    this.imageSource = args.image;
-                  }
-                })
-                .catch(function(e){
-                  console.dir(e);
+                let source = new imageSource.ImageSource();
+                source.fromAsset(imageAsset).then((source) => {
+                  this.imageCropper.show(source).then((args) => {
+                    console.dir(args);
+                    if(args.image !== null){
+                      this.croppedImage.imageSource = args.image;
+                    }
+                  })
+                  .catch(function(e){
+                    console.dir(e);
+                  });                     
                 });
-
             }).catch((err) => {
                 console.log("Error -> " + err.message);
             });
@@ -52,17 +55,18 @@ export class ImageCropperModel extends Observable {
         .then(() => {
           camera.takePicture({width:300,height:300,keepAspectRatio:true})
             .then((imageAsset) => {
-                console.log("Got the image asset");
-                this.imageCropper.show(imageAsset,{width:100,height:100}).then((args) => {
-                  console.dir(args);
-                  if(args.image !== null){
-                    this.imageSource = args.image;
-                  }
-                })
-                .catch(function(e){
-                  console.dir(e);
+                let source = new imageSource.ImageSource();
+                source.fromAsset(imageAsset).then((source) => {
+                  this.imageCropper.show(source,{width:100,height:100}).then((args) => {
+                    console.dir(args);
+                    if(args.image !== null){
+                      this.croppedImage.imageSource = args.image;
+                    }
+                  })
+                  .catch(function(e){
+                    console.dir(e);
+                  });                     
                 });
-                
             }).catch((err) => {
                 console.log("Error -> " + err.message);
             });

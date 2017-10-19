@@ -41,9 +41,6 @@
 		</activity>
 
 		<activity android:name="com.tns.ErrorReportActivity"/>
-
-		<application>
-			<activity android:name="com.yalantis.ucrop.UCropActivity" android:screenOrientation="portrait"/>
-		</application>
+		
 	</application>
 </manifest>

@@ -29,21 +29,19 @@ var UCrop = com.yalantis.ucrop.UCrop;
 export class ImageCropper {
   public show(image: imageSource.ImageSource, options?: OptionsCommon): Promise<Result> {
     return new Promise<Result>((resolve, reject) => {
-      //try {
+      try {
         _options = options;
         if (image.android) {
           var _that = this;
           var sourcePathTemp: string = this._storeImageSource(image);
           var folder: fs.Folder = fs.knownFolders.temp();
           var destinationPathTemp: string = fs.path.join(folder.path, "destTemp.jpeg");
-
-          if (sourcePathTemp == null) {
-            console.log("sourcePathTemp was null!");            
-            // this._cleanFiles(); console.log("Line 41");
-            // reject({
-            //   response: "Error",
-            //   image: null
-            // });
+          if (sourcePathTemp == null) {         
+            this._cleanFiles();
+            reject({
+              response: "Error",
+              image: null
+            });
           }
 
           var sourcePath: android.net.Uri = android.net.Uri.parse("file://" + sourcePathTemp); //Fix our path that comes from {N} file-system.
@@ -108,21 +106,18 @@ export class ImageCropper {
         }
         else {
           // application.android.off(application.AndroidApplication.activityResultEvent, this.onResult);
-          console.log("Line 110");
           reject({
             response: "Error",
-            image: image.android
+            image: null
           });
         }
-      // } catch (e) {
-      //   // application.android.off(application.AndroidApplication.activityResultEvent, this.onResult);
-      //   console.log("Line 118");
-      //   console.dir(e);
-      //   reject({
-      //     response: "Error",
-      //     image: null
-      //   });
-      // }
+      } catch (e) {
+        // application.android.off(application.AndroidApplication.activityResultEvent, this.onResult);
+        reject({
+          response: "Error",
+          image: null
+        });
+      }
     });
   }
 

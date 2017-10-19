@@ -2,7 +2,7 @@
 @Author: Brian Thurlow <bthurlow>
 @Date:   03/29/2016 03:41:05 PM
 @Last modified by:   MultiShiv19
-@Last modified time: 10/20/2017 12:52:29 AM
+@Last modified time: 10/20/2017 04:03:29 AM
 -->
 
 # A {N} Image Cropping Plugin
@@ -34,6 +34,20 @@ var ImageCropper = require("nativescript-imagecropper").ImageCropper;
 ```
 
 (for TS demo, please see the demo folder)
+
+### How to get the image source, from nativescript-camera plugin
+```js
+camera.takePicture({width:300,height:300,keepAspectRatio:true})
+  .then((imageAsset) => {
+      let source = new imageSource.ImageSource();
+      source.fromAsset(imageAsset).then((source) => {
+        // now you have the image source                    
+      });
+  }).catch((err) => {
+      console.log("Error -> " + err.message);
+  });
+```
+(for detailed usage, please see the demo folder)
 
 ### Methods
 
