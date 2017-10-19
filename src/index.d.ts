@@ -1,6 +1,7 @@
-import { Common } from './imagecropper.common';
-export declare class Imagecropper extends Common {
-  // define your typings manually
-  // or..
-  // take the ios or android .d.ts files and copy/paste them here
+import { OptionsCommon } from './interfaces';
+import { Result } from './interfaces';
+import * as imageSource from 'tns-core-modules/image-source';
+
+export declare class ImageCropper {
+    show(image: imageSource.ImageSource, options?: OptionsCommon): Promise<Result>;    
 }

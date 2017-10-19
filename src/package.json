@@ -1,7 +1,7 @@
 {
     "name": "nativescript-imagecropper",
-    "version": "1.0.0",
-    "description": "Your awesome NativeScript plugin.",
+    "version": "0.1.0",
+    "description": "NativeScript Image Cropper Plugin",
     "main": "imagecropper",
     "typings": "index.d.ts",
     "nativescript": {
@@ -33,8 +33,18 @@
         "iOS"
     ],
     "author": {
-        "name": "Your Name",
-        "email": "youremail@yourdomain.com"
+        "name": "bthurlow"
+    },
+    "contributors": [
+        {
+            "name": "MultiShiv19",
+            "email": "contact@shivaprasad.me",
+            "url": "https://shiv19.com"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bthurlow/nativescript-imagecropper"
     },
     "bugs": {
         "url": "https://github.com/bthurlow/nativescript-imagecropper/issues"

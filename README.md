@@ -1,40 +1,76 @@
-# Your Plugin Name
+<!--
+@Author: Brian Thurlow <bthurlow>
+@Date:   03/29/2016 03:41:05 PM
+@Last modified by:   MultiShiv19
+@Last modified time: 10/20/2017 12:52:29 AM
+-->
 
-Add your plugin badges here. See [nativescript-urlhandler](https://github.com/hypery2k/nativescript-urlhandler) for example.
+# A {N} Image Cropping Plugin
 
-Then describe what's the purpose of your plugin. 
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](http://choosealicense.com/licenses/mit/) [![npm](https://img.shields.io/npm/v/nativescript-imagecropper.svg)](https://www.npmjs.com/package/nativescript-imagecropper) [![npm](https://img.shields.io/npm/dt/nativescript-imagecropper.svg?label=npm%20downloads)](https://www.npmjs.com/package/nativescript-imagecropper) [![GitHub release](https://img.shields.io/github/release/bthurlow/nativescript-imagecropper.svg)](https://github.com/bthurlow/nativescript-imagecropper)
 
-In case you develop UI plugin, this is where you can add some screenshots.
+## Notes
 
-## (Optional) Prerequisites / Requirements
+iOS 8+
 
-Describe the prerequisites that the user need to have installed before using your plugin. See [nativescript-firebase plugin](https://github.com/eddyverbruggen/nativescript-plugin-firebase) for example.
+Android 17+
+
+### Based on
+
+[TOCropViewController](https://github.com/TimOliver/TOCropViewController) for iOS
+
+[uCrop](https://github.com/Yalantis/uCrop) for Android
 
 ## Installation
 
-Describe your plugin installation steps. Ideally it would be something like:
+Run `tns plugin add nativescript-imagecropper`
 
-```javascript
-tns plugin add <your-plugin-name>
+### Usage
+
+To use the image cropping module you must first require it.
+
+```js
+var ImageCropper = require("nativescript-imagecropper").ImageCropper;
 ```
 
-## Usage 
+(for TS demo, please see the demo folder)
 
-Describe any usage specifics for your plugin. Give examples for Android, iOS, Angular if needed. See [nativescript-drop-down](https://www.npmjs.com/package/nativescript-drop-down) for example.
-	
-	```javascript
-    Usage code snippets here
-    ```)
+### Methods
 
-## API
+`show(ImageSource)`: Returns a cropped ImageSource
 
-Describe your plugin methods and properties here. See [nativescript-feedback](https://github.com/EddyVerbruggen/nativescript-feedback) for example.
-    
-| Property | Default | Description |
-| --- | --- | --- |
-| some property | property default value | property description, default values, etc.. |
-| another property | property default value | property description, default values, etc.. |
-    
-## License
+```js
+var cropper = new ImageCropper();
+cropper.show(picture).then(function(args){
+  console.log(JSON.stringify(args));
+})
+.catch(function(e){
+  console.log(e);
+});
+```
 
-Apache License Version 2.0, January 2004
+`show(ImageSource,Options)`: Returns a cropped and resized ImageSource
+
+```js
+var cropper = new ImageCropper();
+cropper.show(picture,{width:300,height:300}).then(function(args){
+  console.log(JSON.stringify(args));
+})
+.catch(function(e){
+  console.log(e);
+});
+```
+
+### Options
+
+Option | Type   | Description
+------ | ------ | ------------------------------------------------
+width  | number | The width of the image you would like returned.
+height | number | The height of the image you would like returned.
+
+### Returned Result Arguments
+
+Argument | Type        | Result(s)
+-------- | ----------- | --------------------------------------------------------------------------
+response | string      | Success<br/>Cancelled<br/>Error
+image    | ImageSource | `null` if there was an error or was cancelled<br/>`ImageSource` on success

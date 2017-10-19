@@ -1,1 +1,11 @@
 ﻿@import 'nativescript-theme-core/css/core.light.css';
+
+.title {
+    horizontal-align: center;
+    margin: 20;
+}
+
+button {
+    horizontal-align: center;
+    margin: 20;
+}

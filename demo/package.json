@@ -9,9 +9,11 @@
     }
   },
   "dependencies": {
+    "nativescript-camera": "^3.1.2",
+    "nativescript-imagecropper": "../src",
+    "nativescript-permissions": "^1.2.3",
     "nativescript-theme-core": "^1.0.4",
     "nativescript-unit-test-runner": "^0.3.4",
-    "nativescript-imagecropper": "../src",
     "tns-core-modules": "^3.1.1"
   },
   "devDependencies": {
