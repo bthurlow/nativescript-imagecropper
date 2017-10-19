@@ -82,6 +82,16 @@ Option | Type   | Description
 width  | number | The width of the image you would like returned.
 height | number | The height of the image you would like returned.
 
+### Additional notes for Android
+You can override library colors just specifying colors with the same names in your colors.xml file.
+For example:
+
+<color name="ucrop_color_toolbar">#000000</color>
+
+This will make toolbar color black if specified inside you application colors.xml file.
+
+(thanks to @chrispoket99 for mentioning this)
+
 ### Returned Result Arguments
 
 Argument | Type        | Result(s)
