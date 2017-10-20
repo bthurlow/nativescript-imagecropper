@@ -81,7 +81,7 @@ export class ImageCropper {
               application.android.off(application.AndroidApplication.activityResultEvent, onResult);
               reject({
                 response: "Error",
-                image: image.android
+                image: null
               });
               return;
             }

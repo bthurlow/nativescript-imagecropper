@@ -1,6 +1,6 @@
 {
     "name": "nativescript-imagecropper",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "NativeScript Image Cropper Plugin",
     "main": "imagecropper",
     "typings": "index.d.ts",
@@ -8,6 +8,13 @@
         "platforms": {
             "android": "3.0.0",
             "ios": "3.0.0"
+        },
+        "plugin": {
+            "nan": "true",
+            "pan": "true",
+            "vue": "true",
+            "core3": "true",
+            "category": "Interface"
         }
     },
     "scripts": {
@@ -30,7 +37,12 @@
         "NativeScript",
         "JavaScript",
         "Android",
-        "iOS"
+        "iOS",
+        "Image Cropper",
+        "Crop",
+        "imagecropper",
+        "crop photo",
+        "image"
     ],
     "author": {
         "name": "bthurlow"
@@ -49,7 +61,7 @@
     "bugs": {
         "url": "https://github.com/bthurlow/nativescript-imagecropper/issues"
     },
-    "license": "Apache-2.0",
+    "license": "MIT",
     "homepage": "https://github.com/bthurlow/nativescript-imagecropper",
     "readmeFilename": "README.md",
     "devDependencies": {

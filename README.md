@@ -25,7 +25,15 @@ Android 17+
 
 Run `tns plugin add nativescript-imagecropper`
 
-### Usage
+## Screenshots
+
+### Cropper UI (android)
+<img src="https://github.com/shiv19/nativescript-imagecropper/blob/master/assets/cropperuiandroid.jpeg?raw=true" height="320" > 
+
+### End result (android)
+<img src="https://github.com/shiv19/nativescript-imagecropper/blob/master/assets/cropperresultandroid.jpeg?raw=true" height="320" > 
+
+### Usage (for TS demo, please see the demo folder)
 
 To use the image cropping module you must first require it.
 
@@ -33,45 +41,54 @@ To use the image cropping module you must first require it.
 var ImageCropper = require("nativescript-imagecropper").ImageCropper;
 ```
 
-(for TS demo, please see the demo folder)
-
 ### How to get the image source, from nativescript-camera plugin
 ```js
+var camera = require("nativescript-camera");
+
+// You might want to request camera permissions first
+// check demo folder for sample implementation
+
 camera.takePicture({width:300,height:300,keepAspectRatio:true})
   .then((imageAsset) => {
       let source = new imageSource.ImageSource();
       source.fromAsset(imageAsset).then((source) => {
-        // now you have the image source                    
+        // now you have the image source    
+        // pass it to the cropper                
       });
   }).catch((err) => {
       console.log("Error -> " + err.message);
   });
 ```
-(for detailed usage, please see the demo folder)
 
 ### Methods
 
 `show(ImageSource)`: Returns a cropped ImageSource
 
 ```js
-var cropper = new ImageCropper();
-cropper.show(picture).then(function(args){
-  console.log(JSON.stringify(args));
+var imageCropper = new ImageCropper();
+imageCropper.show(imageSource).then((args) => {
+  console.dir(args);
+  if(args.image !== null){
+    imageView.imageSource = args.image;
+  }
 })
 .catch(function(e){
-  console.log(e);
+  console.dir(e);
 });
 ```
 
 `show(ImageSource,Options)`: Returns a cropped and resized ImageSource
 
 ```js
-var cropper = new ImageCropper();
-cropper.show(picture,{width:300,height:300}).then(function(args){
-  console.log(JSON.stringify(args));
+var imageCropper = new ImageCropper();
+imageCropper.show(imageSource,{width:300,height:300}).then((args) => {
+  console.dir(args);
+  if(args.image !== null){
+    imageView.imageSource = args.image;
+  }
 })
 .catch(function(e){
-  console.log(e);
+  console.dir(e);
 });
 ```
 
@@ -86,9 +103,11 @@ height | number | The height of the image you would like returned.
 You can override library colors just specifying colors with the same names in your colors.xml file.
 For example:
 
+```xml
 <color name="ucrop_color_toolbar">#000000</color>
+```
 
-This will make toolbar color black if specified inside you application colors.xml file.
+This will make toolbar color black if specified inside your `App_Resources/Android/values/colors.xml` file.
 
 (thanks to @chrispoket99 for mentioning this)
 
