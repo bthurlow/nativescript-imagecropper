@@ -20,6 +20,8 @@ declare class TOCropViewController extends UIViewController {
   delegate: any;
   cropView: TOCropView;
   toolbar: TOCropToolbar;
+  defaultAspectRatio: any;
+  aspectRatioLocked: boolean;
   public setAspectRatioLocked(aspectRatioLocked: boolean): void;
   public setRotateButtonHidden(rotateButtonHidden: boolean): void;
   public setRotateClockwiseButtonHidden(rotateClockwiseButtonHidden: boolean): void;
@@ -115,21 +117,22 @@ export class ImageCropper {
       if (image.ios) {
         var viewController = TOCropViewController.alloc().initWithImage(image.ios);
         var delegate = TOCropViewControllerDelegateImpl.initWithOwner(new WeakRef(viewController));
-
         delegate.initResolveReject(resolve, reject);
-
         CFRetain(delegate);
         viewController.delegate = delegate;
-
         var page = frame.topmost().ios.controller;
+        if (_options.lockSquare) {
+          viewController.defaultAspectRatio = 1;
+          viewController.aspectRatioLocked = true; // The crop box is locked to the aspect ratio and can't be resized away from it
+        }
         page.presentViewControllerAnimatedCompletion(viewController, true, function () {
-          //Set Fixed Crop Size
-          if (_options && _options.width && _options.height) {
-            var gcd = _that._gcd(_options.width, _options.height);
+          if (_options) {
+            if (_options.width && _options.height) {
+              var gcd = _that._gcd(_options.width, _options.height);
+              viewController.toolbar.clampButtonHidden = true;
+              viewController.cropView.setAspectLockEnabledWithAspectRatioAnimated(CGSizeMake(_options.width / gcd, _options.height / gcd), false);
+            }
 
-            viewController.toolbar.clampButtonHidden = true;
-            // viewController.toolbar.setNeedsLayout();
-            viewController.cropView.setAspectLockEnabledWithAspectRatioAnimated(CGSizeMake(_options.width / gcd, _options.height / gcd), false);
           }
         });
       }

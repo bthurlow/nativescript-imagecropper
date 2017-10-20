@@ -96,6 +96,7 @@ Option | Type   | Description
 ------ | ------ | ------------------------------------------------
 width  | number | The width of the image you would like returned.
 height | number | The height of the image you would like returned.
+lockSquare | boolean | Pass this as true, to lock square aspect ratio on iOS, on android, this option doesn't make any difference.
 
 ### Additional notes for Android
 You can override library colors just specifying colors with the same names in your colors.xml file.

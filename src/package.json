@@ -1,6 +1,6 @@
 {
     "name": "nativescript-imagecropper",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "NativeScript Image Cropper Plugin",
     "main": "imagecropper",
     "typings": "index.d.ts",
