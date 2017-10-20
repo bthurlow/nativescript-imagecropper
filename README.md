@@ -31,6 +31,9 @@ Run `tns plugin add nativescript-imagecropper`
 ### Cropper UI & End result (android)
 <img src="https://github.com/shiv19/nativescript-imagecropper/blob/master/assets/cropperuiandroid.jpeg?raw=true" height="320" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/shiv19/nativescript-imagecropper/blob/master/assets/cropperresultandroid.jpeg?raw=true" height="320" > 
 
+### Cropper UI (iOS)
+<img src="https://github.com/shiv19/nativescript-imagecropper/blob/master/assets/cropperuiios.png?raw=true" height="320" > 
+
 ### Usage (for TS demo, please see the demo folder)
 
 To use the image cropping module you must first require it.

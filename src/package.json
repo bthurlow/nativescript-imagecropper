@@ -52,6 +52,11 @@
             "name": "MultiShiv19",
             "email": "contact@shivaprasad.me",
             "url": "https://shiv19.com"
+        },
+        {
+            "name": "davecoffin",
+            "email": "dave@davecoffin.com",
+            "url": "https://github.com/davecoffin"
         }
     ],
     "repository": {
