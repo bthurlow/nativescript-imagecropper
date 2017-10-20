@@ -1,3 +1,4 @@
+// Contributed by Lukas Park on 20 Oct 2017
 const Vue = require("./nativescript-vue");
 const ImageCropper = require("nativescript-imagecropper").ImageCropper;
 const camera = require("nativescript-camera");
