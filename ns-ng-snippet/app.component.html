@@ -1,0 +1,10 @@
+<ActionBar title="Example Image Filter">
+    
+    </ActionBar>
+    <StackLayout class="form">
+        <Image [src]="imageUrl"></Image>
+    
+        <Button text="Camera" (tap)="takePhoto()" ></Button>
+        <Button text="Camera with Resize" (tap)="resizePhoto()" ></Button>
+    
+    </StackLayout>
