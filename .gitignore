@@ -2,6 +2,7 @@
 .idea
 .DS_Store
 *.js
+!ns-vue-snippet/vue-snippet.js
 *.js.map
 *.log
 src/*.d.ts
