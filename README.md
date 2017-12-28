@@ -26,6 +26,9 @@ Android 17+
 
 Run `tns plugin add nativescript-imagecropper`
 
+Add lines to `\platforms\android\app\build.gradle`
+<img src="https://i.imgur.com/RdgN8Eu.png">
+
 ## Screenshots
 
 ### Cropper UI & End result (android)
