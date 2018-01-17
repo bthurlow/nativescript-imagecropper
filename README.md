@@ -111,7 +111,26 @@ For example:
 
 This will make toolbar color black if specified inside your `App_Resources/Android/values/colors.xml` file.
 
-(thanks to @chrispoket99 for mentioning this)
+#### Android styles to customize the cropper activity/styles
+
+``` xml
+   <!--uCrop Activity-->
+    <color name="ucrop_color_toolbar">#FF6E40</color>
+    <color name="ucrop_color_statusbar">#CC5833</color>
+    <color name="ucrop_color_toolbar_widget">#fff</color>
+    <color name="ucrop_color_widget">#000</color>
+    <color name="ucrop_color_widget_active">#FF6E40</color>
+    <color name="ucrop_color_widget_background">#fff</color>
+    <color name="ucrop_color_widget_text">#000</color>
+    <color name="ucrop_color_progress_wheel_line">#808080</color>
+    <color name="ucrop_color_crop_background">#000</color>
+
+    <!--Crop View-->
+    <color name="ucrop_color_default_crop_grid">#80ffffff</color>
+    <color name="ucrop_color_default_crop_frame">#ffffff</color>
+    <color name="ucrop_color_default_dimmed">#8c000000</color>
+    <color name="ucrop_color_default_logo">#4f212121</color>
+```
 
 ### Returned Result Arguments
 
