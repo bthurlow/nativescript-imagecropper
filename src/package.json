@@ -57,6 +57,12 @@
             "name": "davecoffin",
             "email": "dave@davecoffin.com",
             "url": "https://github.com/davecoffin"
+        },
+
+        {
+            "name": "Brad Martin",
+            "email": "bmartin@nstudio.io",
+            "url": "https://github.com/bradmartin"
         }
     ],
     "repository": {
