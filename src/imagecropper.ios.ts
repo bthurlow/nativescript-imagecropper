@@ -1,38 +1,12 @@
 import * as frame from 'tns-core-modules/ui/frame';
-import * as imageSource from 'tns-core-modules/image-source';
-import { OptionsCommon } from './interfaces';
-import { Result } from './interfaces';
+import { ImageSource } from 'tns-core-modules/image-source';
+import { OptionsCommon, Result } from './';
 
-declare class TOCropView {
-  aspectRatioLocked: boolean;
-  public setAspectLockEnabledWithAspectRatioAnimated(aspectRatio: CGSize, animated: boolean): void;
-}
-declare class TOCropToolbar extends UIView {
-  clampButtonHidden: boolean;
-  clampButtonGlowing: boolean;
-  rotateButtonHidden: boolean;
-  rotateButton: UIButton;
-  public setRotateClockwiseButtonHidden(rotateClockwiseButtonHidden: boolean): void;
-}
-declare class TOCropViewController extends UIViewController {
-  static alloc(): TOCropViewController;
-  public initWithImage(image: UIImage): TOCropViewController;
-  delegate: any;
-  cropView: TOCropView;
-  toolbar: TOCropToolbar;
-  defaultAspectRatio: any;
-  aspectRatioLocked: boolean;
-  public setAspectRatioLocked(aspectRatioLocked: boolean): void;
-  public setRotateButtonHidden(rotateButtonHidden: boolean): void;
-  public setRotateClockwiseButtonHidden(rotateClockwiseButtonHidden: boolean): void;
-}
-declare var TOCropViewControllerDelegate;
-
-var _options: OptionsCommon;
+let _options: OptionsCommon;
 
 class TOCropViewControllerDelegateImpl extends NSObject {
-  private _resolve: any;
-  private _reject: any;
+  private _resolve: (val: Result) => void;
+  private _reject: (val: Result) => void;
   private _owner: WeakRef<TOCropViewController>;
 
   public static ObjCProtocols = [TOCropViewControllerDelegate];
@@ -44,7 +18,7 @@ class TOCropViewControllerDelegateImpl extends NSObject {
     return handler;
   }
 
-  public initResolveReject(resolve: any, reject: any): void {
+  public initResolveReject(resolve: (val: Result) => void, reject: (val: Result) => void): void {
     // console.log("TOCropViewControllerDelegateImpl.initResolveReject");
     this._resolve = resolve;
     this._reject = reject;
@@ -54,16 +28,21 @@ class TOCropViewControllerDelegateImpl extends NSObject {
     // console.log("TOCropViewControllerDelegateImpl.cropViewControllerDidCropToImageWithRectAngle");
     cropViewController.dismissViewControllerAnimatedCompletion(true, null);
     if (image) {
-      var imgSrc = new imageSource.ImageSource();
+      const imgSrc = new ImageSource();
       if (_options && _options.width && _options.height) {
-        //Resize Image
-        var rect: CGRect = CGRectMake(0, 0, _options.width, _options.height);
+        // Resize Image
+        const rect: CGRect = CGRectMake(0, 0, _options.width, _options.height);
         UIGraphicsBeginImageContext(rect.size);
         image.drawInRect(rect);
-        var resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+        const resizedImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
 
-        if (imgSrc.setNativeSource(resizedImage)) {
+        try {
+          imgSrc.setNativeSource(resizedImage);
+        } catch (e) {
+          console.error(e);
+        }
+        if (imgSrc.ios) {
           this._resolve({
             response: "Success",
             image: imgSrc
@@ -77,8 +56,13 @@ class TOCropViewControllerDelegateImpl extends NSObject {
         }
       }
       else {
-        //Use Cropped Image w/o Resize
-        if (imgSrc.setNativeSource(image)) {
+        // Use Cropped Image w/o Resize
+        try {
+          imgSrc.setNativeSource(image);
+        } catch (e) {
+          console.error(e);
+        }
+        if (imgSrc.ios) {
           this._resolve({
             response: "Success",
             image: imgSrc
@@ -96,7 +80,7 @@ class TOCropViewControllerDelegateImpl extends NSObject {
     // return;
   }
 
-  public cropViewControllerDidFinishCancelled(cropViewController: TOCropViewController, cancelled: boolean): void { //Promise<Result>
+  public cropViewControllerDidFinishCancelled(cropViewController: TOCropViewController, cancelled: boolean): void { // Promise<Result>
     // console.log("TOCropViewControllerDelegateImpl.cropViewControllerDidFinishCancelled");
     cropViewController.dismissViewControllerAnimatedCompletion(true, null);
     this._resolve({
@@ -109,28 +93,28 @@ class TOCropViewControllerDelegateImpl extends NSObject {
 }
 
 export class ImageCropper {
-  public show(image: imageSource.ImageSource, options?: OptionsCommon): Promise<Result> {
+  public show(image: ImageSource, options?: OptionsCommon): Promise<Result> {
     // console.log("ImageCropper.show");
-    let _that = this;
-    return new Promise<Result>((resolve, reject) => {
+    return new Promise<Result>((resolve: (val: Result) => void, reject: (val: Result) => void) => {
       _options = options;
       if (image.ios) {
-        var viewController = TOCropViewController.alloc().initWithImage(image.ios);
-        var delegate = TOCropViewControllerDelegateImpl.initWithOwner(new WeakRef(viewController));
+        const viewController = TOCropViewController.alloc().initWithImage(image.ios);
+        const delegate = TOCropViewControllerDelegateImpl.initWithOwner(new WeakRef(viewController));
         delegate.initResolveReject(resolve, reject);
         CFRetain(delegate);
         viewController.delegate = delegate;
-        var page = frame.topmost().ios.controller;
+        const page = frame.topmost().ios.controller;
         if (_options.lockSquare) {
-          viewController.defaultAspectRatio = 1;
-          viewController.aspectRatioLocked = true; // The crop box is locked to the aspect ratio and can't be resized away from it
+          viewController.aspectRatioPreset = TOCropViewControllerAspectRatioPreset.PresetSquare;
+          viewController.aspectRatioLockEnabled = true; // The crop box is locked to the aspect ratio and can't be resized away from it
+          viewController.aspectRatioPickerButtonHidden = true;
         }
         page.presentViewControllerAnimatedCompletion(viewController, true, function () {
           if (_options) {
             if (_options.width && _options.height) {
-              var gcd = _that._gcd(_options.width, _options.height);
+              const gcd = ImageCropper._gcd(_options.width, _options.height);
               viewController.toolbar.clampButtonHidden = true;
-              viewController.cropView.setAspectLockEnabledWithAspectRatioAnimated(CGSizeMake(_options.width / gcd, _options.height / gcd), false);
+              viewController.cropView.setAspectRatioAnimated(CGSizeMake(_options.width / gcd, _options.height / gcd), false);
             }
 
           }
@@ -144,11 +128,11 @@ export class ImageCropper {
       }
     });
   }
-  private _gcd(width: number, height: number): number {
-    if (height == 0) {
+  private static _gcd(width: number, height: number): number {
+    if (height === 0) {
       return width;
     } else {
-      return this._gcd(height, width % height);
+      return ImageCropper._gcd(height, width % height);
     }
   }
 }
