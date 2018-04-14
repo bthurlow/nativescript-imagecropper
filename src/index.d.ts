@@ -1,7 +1,16 @@
-import { OptionsCommon } from './interfaces';
-import { Result } from './interfaces';
-import * as imageSource from 'tns-core-modules/image-source';
+import { ImageSource } from 'tns-core-modules/image-source';
+
+export interface OptionsCommon {
+  width?: number;
+  height?: number;
+  lockSquare?: boolean;
+}
+
+export interface Result {
+  response: 'Success' | 'Error' | 'Cancelled';
+  image: ImageSource | null;
+}
 
 export declare class ImageCropper {
-    show(image: imageSource.ImageSource, options?: OptionsCommon): Promise<Result>;    
+    show(image: ImageSource, options?: OptionsCommon): Promise<Result>;
 }
