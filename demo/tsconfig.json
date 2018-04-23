@@ -25,7 +25,8 @@
             "*": [
                 "./node_modules/*"
             ]
-        }
+        },
+        "skipLibCheck": true
     },
     "exclude": [
         "node_modules",
