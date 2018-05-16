@@ -108,6 +108,7 @@ export class ImageCropper {
           viewController.aspectRatioPreset = TOCropViewControllerAspectRatioPreset.PresetSquare;
           viewController.aspectRatioLockEnabled = true; // The crop box is locked to the aspect ratio and can't be resized away from it
           viewController.aspectRatioPickerButtonHidden = true;
+          viewController.resetAspectRatioEnabled = false;
         }
         page.presentViewControllerAnimatedCompletion(viewController, true, function () {
           if (_options) {
