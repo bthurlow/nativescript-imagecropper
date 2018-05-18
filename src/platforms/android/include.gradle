@@ -13,18 +13,8 @@ repositories {
   maven { url "https://jitpack.io" }
 }
 
-// https://github.com/NativeScript/android-runtime/blob/master/test-app/app/build.gradle#L206
-def supportVersion = project.hasProperty("supportVersion") ? project.supportVersion : "27.0.1"
-
 dependencies {
-  configurations.all {
-      resolutionStrategy.eachDependency { details ->
-          def requested = details.requested
-          if (requested.group == 'com.android.support' && requested.name != 'multidex') {
-              // com.android.support major version should match buildToolsVersion
-              details.useVersion "$supportVersion"
-          }
-      }
+  compile('com.github.yalantis:ucrop:2.2.2-native') {
+    transitive = false
   }
-  compile 'com.github.yalantis:ucrop:2.2.2-native'
 }
