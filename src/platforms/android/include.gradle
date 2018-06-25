@@ -1,20 +1,13 @@
 /* Include.gradle configuration: http://docs.nativescript.org/plugins/plugins#includegradle-specification */
 
 android {
-	productFlavors {
-		"nativescript-imagecropper" {
-			dimension "nativescript-imagecropper"
-		}
-	}
+	
 }
 
 repositories {
   jcenter()
-  maven { url "https://jitpack.io" }
 }
 
 dependencies {
-  compile('com.github.yalantis:ucrop:2.2.2-native') {
-    transitive = false
-  }
+  compile 'com.yalantis:ucrop:1.5.0'
 }
