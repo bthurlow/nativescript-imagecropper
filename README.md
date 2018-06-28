@@ -138,3 +138,35 @@ Argument | Type        | Result(s)
 -------- | ----------- | --------------------------------------------------------------------------
 response | string      | Success<br/>Cancelled<br/>Error
 image    | ImageSource | `null` if there was an error or was cancelled<br/>`ImageSource` on success
+
+### Bonus: Snippet for using with nativescript-imagepicker 6.x
+```js
+const context = imagepickerModule.create({
+    mode: 'single' // allow choosing single image
+});
+context
+    .authorize()
+    .then(function() {
+        return context.present();
+    })
+    .then(function(selection) {
+        selection.forEach(function(selected) {
+            selected.getImageAsync(source => {
+                const selectedImgSource = imageSource.fromNativeSource(source);
+                imageCropper
+                    .show(selectedImgSource, { width: 300, height: 300 })
+                    .then(args => {
+                        if (args.image !== null) {
+                               // Use args.image
+                        }
+                    })
+                    .catch(function(e) {
+                        console.log(e);
+                    });
+            });
+        });
+    })
+    .catch(function(e) {
+        console.log(e);
+    });
+```
