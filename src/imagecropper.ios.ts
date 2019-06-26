@@ -103,7 +103,7 @@ export class ImageCropper {
         delegate.initResolveReject(resolve, reject);
         CFRetain(delegate);
         viewController.delegate = delegate;
-        const page = frame.topmost().ios.controller;
+        let page = frame.topmost().ios.controller;
         while (page.presentedViewController
             && page.presentedViewController.viewLoaded
             && page.presentedViewController.view.window) {
