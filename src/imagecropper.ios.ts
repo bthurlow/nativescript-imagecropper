@@ -103,12 +103,14 @@ export class ImageCropper {
         delegate.initResolveReject(resolve, reject);
         CFRetain(delegate);
         viewController.delegate = delegate;
-        let page = frame.topmost().ios.controller;
-        while (page.presentedViewController
-            && page.presentedViewController.viewLoaded
-            && page.presentedViewController.view.window) {
-            page = page.presentedViewController;
+        let vc = frame.topmost().ios.controller;
+        let page = null;
+        while (vc.presentedViewController
+            && vc.presentedViewController.viewLoaded) {
+            vc = vc.presentedViewController;
+            if (!vc.beingDismissed) page = vc;
         }
+        if (page === null) throw "No page available for modal";
         
         if (_options.lockSquare) {
           viewController.aspectRatioPreset = TOCropViewControllerAspectRatioPreset.PresetSquare;
