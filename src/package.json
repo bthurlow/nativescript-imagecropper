@@ -1,6 +1,6 @@
 {
     "name": "nativescript-imagecropper",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "NativeScript Image Cropper Plugin",
     "main": "imagecropper",
     "typings": "index.d.ts",
@@ -66,6 +66,11 @@
         {
             "name": "Dick Smith",
             "url": "https://github.com/DickSmith"
+        },
+        {
+            "name": "Sejun Jeong",
+            "email": "sejun@ppygd.com",
+            "url": "https://github.com/mailiam"
         }
     ],
     "repository": {
