@@ -111,7 +111,6 @@ export class ImageCropper {
             if (!vc.beingDismissed) page = vc;
         }
         if (page === null) {
-          console.warn("No page available for modal, falling back to v1.0.5 behavior");
           page = vc;
         }
         
