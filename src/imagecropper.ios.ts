@@ -110,7 +110,10 @@ export class ImageCropper {
             vc = vc.presentedViewController;
             if (!vc.beingDismissed) page = vc;
         }
-        if (page === null) throw "No page available for modal";
+        if (page === null) {
+          console.warn("No page available for modal, falling back to v1.0.5 behavior");
+          page = vc;
+        }
         
         if (_options.lockSquare) {
           viewController.aspectRatioPreset = TOCropViewControllerAspectRatioPreset.PresetSquare;
