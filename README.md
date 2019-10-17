@@ -16,6 +16,9 @@ iOS 8+
 
 Android 17+
 
+v2.0.0+ the version of Android Lib has changed and the cropper looks different now,
+hence the breaking change
+
 ### Based on
 
 [TOCropViewController](https://github.com/TimOliver/TOCropViewController) for iOS

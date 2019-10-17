@@ -16,6 +16,7 @@ seed-tests/seed-copy-new-git-repo/**/*.*
 !demo/app/tests/*.js
 demo/*.d.ts
 !demo/references.d.ts
+!demo/webpack.config.js
 demo/lib
 demo/platforms
 node_modules

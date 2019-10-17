@@ -1,6 +1,6 @@
 {
     "name": "nativescript-imagecropper",
-    "version": "1.0.7",
+    "version": "2.0.0",
     "description": "NativeScript Image Cropper Plugin",
     "main": "imagecropper",
     "typings": "index.d.ts",
@@ -26,8 +26,8 @@
         "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\"",
         "plugin.link": "npm link && cd ../demo && npm link nativescript-imagecropper && cd ../src",
         "plugin.tscwatch": "npm run tsc -- -w",
-        "demo.ios": "npm i && npm run tsc && cd ../demo && tns run ios --syncAllFiles",
-        "demo.android": "npm i && npm run tsc && cd ../demo && tns run android --syncAllFiles",
+        "demo.ios": "npm i && npm run tsc && cd ../demo && tns run ios",
+        "demo.android": "npm i && npm run tsc && cd ../demo && tns run android",
         "demo.reset": "cd ../demo && rimraf platforms",
         "plugin.prepare": "npm run tsc && cd ../demo && tns plugin remove nativescript-imagecropper && tns plugin add ../src",
         "clean": "cd ../demo && rimraf hooks node_modules platforms && cd ../src && rimraf node_modules && npm run plugin.link",
@@ -71,6 +71,10 @@
             "name": "Sejun Jeong",
             "email": "sejun@ppygd.com",
             "url": "https://github.com/mailiam"
+        },
+        {
+            "name": "Jitendra Prajapati",
+            "url": "https://github.com/jitendraashutec"
         }
     ],
     "repository": {
