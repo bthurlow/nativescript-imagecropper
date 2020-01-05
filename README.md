@@ -2,7 +2,7 @@
 @Author: Brian Thurlow <bthurlow>
 @Date:   03/29/2016 03:41:05 PM
 @Last modified by:   MultiShiv19
-@Last modified time: 10/20/2017 04:03:29 AM
+@Last modified time: 01/06/2020 10:00:19 AM
 -->
 
 # A {N} Image Cropping Plugin
@@ -57,7 +57,12 @@ camera.takePicture({width:300,height:300,keepAspectRatio:true})
       let source = new imageSource.ImageSource();
       source.fromAsset(imageAsset).then((source) => {
         // now you have the image source    
-        // pass it to the cropper                
+        // pass it to the cropper   
+        // recommend using setTimeout like this
+        setTimeout(() => {
+          // on iOS we want a timeout of 1second as it takes time before
+          // the imageSource is ready to be read by the plugin
+        }, isAndroid ? 0 : 1000);             
       });
   }).catch((err) => {
       console.log("Error -> " + err.message);
@@ -103,8 +108,71 @@ Option | Type   | Description
 width  | number | The width of the image you would like returned.
 height | number | The height of the image you would like returned.
 lockSquare | boolean | Pass this as true, to lock square aspect ratio on iOS, on android, this option doesn't make any difference.
+circularCrop | boolean | Pass this as true, to crop a circular image on iOS, on android, this options shows a circular mask while cropping, but returns a rectangular image.
+
+### Android Config
+
+```ts
+export interface OptionsAndroid {
+  isFreeStyleCropEnabled?: boolean; // set to true to let user resize crop bounds (disabled by default)
+  toolbarTitle?: string; // default 'Crop Image'
+  toolbarTextColor?: string; // desired resolved color of Toolbar text and buttons (default is darker orange)
+  toolbarColor?: string; // desired resolved color of the toolbar
+  rootViewBackgroundColor?: string; // desired background color that should be applied to the root view
+  logoColor?: string; // desired resolved color of logo fill (default is darker grey)
+  statusBarColor?: string; // Set statusbar color
+  showCropGrid?: boolean; // set to true if you want to see a crop grid/guidelines on top of an image
+  showCropFrame?: boolean; // set to true if you want to see a crop frame rectangle on top of an image
+  cropFrameStrokeWidth?: number; // desired width of crop frame line in pixels
+  cropGridStrokeWidth?: number; // desired width of crop grid lines in pixels
+  cropGridColor?: string; // desired color of crop grid/guidelines
+  cropFrameColor?: string; // desired color of crop frame
+  cropGridRowCount?: number; // crop grid rows count
+  cropGridColumnCount?: number; // crop grid columns count
+  hideBottomControls?: boolean; // set to true to hide the bottom controls (shown by default)
+  compressionQuality?: number; // Set compression quality [0-100] that will be used to save resulting Bitmap
+  dimmedLayerColor?: string; // desired color of dimmed area around the crop bounds
+  setAspectRatioOptions?: AspectRatioOptions; // Pass an ordered list of desired aspect ratios that should be available for a user.
+  toolbarCropDrawable?: any; // Android Drawable (pass native drawable object ONLY)
+  toolbarCancelDrawable?: any; // Android Drawable (pass native drawable object ONLY)
+}
+
+export interface AspectRatio {
+  aspectRatioTitle: string,
+  aspectRatioX: number,
+  aspectRatioY: number;
+}
+
+export interface AspectRatioOptions {
+  defaultIndex: number;
+  aspectRatios: AspectRatio[]
+}
+
+// example aspectRatio options
+setAspectRatioOptions: {
+    defaultIndex: 0,
+    aspectRatios: [
+        {
+            aspectRatioTitle: '1:1',
+            aspectRatioX: 1,
+            aspectRatioY: 1
+        },
+        {
+            aspectRatioTitle: '16:9',
+            aspectRatioX: 16,
+            aspectRatioY: 9
+        },
+        {
+            aspectRatioTitle: '18:9',
+            aspectRatioX: 18,
+            aspectRatioY: 9
+        }
+    ]
+}
+```
 
 ### Additional notes for Android
+
 You can override library colors just specifying colors with the same names in your colors.xml file.
 For example:
 
@@ -143,6 +211,7 @@ response | string      | Success<br/>Cancelled<br/>Error
 image    | ImageSource | `null` if there was an error or was cancelled<br/>`ImageSource` on success
 
 ### Bonus: Snippet for using with nativescript-imagepicker 6.x
+
 ```js
 const context = imagepickerModule.create({
     mode: 'single' // allow choosing single image
@@ -155,17 +224,19 @@ context
     .then(function(selection) {
         selection.forEach(function(selected) {
             selected.getImageAsync(source => {
+              if (source) {
                 const selectedImgSource = imageSource.fromNativeSource(source);
                 imageCropper
-                    .show(selectedImgSource, { width: 300, height: 300 })
+                    .show(selectedImgSource, { width: 500, height: 500 })
                     .then(args => {
                         if (args.image !== null) {
-                               // Use args.image
+                          // Use args.image
                         }
                     })
                     .catch(function(e) {
                         console.log(e);
                     });
+              }
             });
         });
     })

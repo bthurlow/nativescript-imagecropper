@@ -1,13 +1,13 @@
 {
     "name": "nativescript-imagecropper",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "description": "NativeScript Image Cropper Plugin",
     "main": "imagecropper",
     "typings": "index.d.ts",
     "nativescript": {
         "platforms": {
-            "android": "3.0.0",
-            "ios": "3.0.0"
+            "android": "6.0.2",
+            "ios": "6.0.2"
         },
         "plugin": {
             "nan": "true",
@@ -88,12 +88,11 @@
     "homepage": "https://github.com/bthurlow/nativescript-imagecropper",
     "readmeFilename": "README.md",
     "devDependencies": {
-        "tns-core-modules": "^3.1.0",
-        "tns-platform-declarations": "^3.1.0",
-        "typescript": "~2.8.1",
-        "prompt": "^1.0.0",
+        "@nativescript/core": "^6.3.2",
         "rimraf": "^2.5.0",
-        "tslint": "^5.0.0"
+        "tns-platform-declarations": "^6.2.0",
+        "tslint": "^5.0.0",
+        "typescript": "~3.4.0"
     },
     "dependencies": {},
     "bootstrapper": "nativescript-plugin-seed"

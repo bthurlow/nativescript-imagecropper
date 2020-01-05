@@ -1,17 +1,16 @@
-import { Observable } from "tns-core-modules/data/observable";
-import { ImageCropper } from "nativescript-imagecropper";
+import { Observable } from "@nativescript/core/data/observable";
+import { ImageCropper, OptionsAndroid } from "nativescript-imagecropper";
 import * as camera from "nativescript-camera";
 import * as permissions from "nativescript-permissions";
-import { Image } from "tns-core-modules/ui/image";
-import * as frameModule from "tns-core-modules/ui/frame";
-import * as imageSource from "tns-core-modules/image-source";
-import { isAndroid } from "tns-core-modules/platform";
+import { Frame } from "@nativescript/core/ui/frame";
+import { ImageSource } from "@nativescript/core/image-source";
+import { isAndroid } from "@nativescript/core/platform";
 
 declare var android: any;
 
 export class ImageCropperModel extends Observable {
     private imageCropper: ImageCropper;
-    private imageSource: imageSource.ImageSource;
+    private imageSource: ImageSource;
     private croppedImage;
 
     constructor() {
@@ -20,7 +19,7 @@ export class ImageCropperModel extends Observable {
         this.imageCropper = new ImageCropper();
 
         setTimeout(() => {
-            this.croppedImage = frameModule.topmost().getViewById("croppedImage");
+            this.croppedImage = Frame.topmost().getViewById("croppedImage");
         }, 1000);
     }
 
@@ -33,12 +32,38 @@ export class ImageCropperModel extends Observable {
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ])
                 .then(() => {
-                    this.cropImage({ lockSquare: true });
+                    console.log('passing isFreeStyleCropEnabled as true')
+                    this.cropImage({ lockSquare: true }, <OptionsAndroid>{
+                        isFreeStyleCropEnabled: true,
+                        statusBarColor: 'black',
+                        setAspectRatioOptions: {
+                            defaultIndex: 0,
+                            aspectRatios: [
+                                {
+                                    aspectRatioTitle: '1:1',
+                                    aspectRatioX: 1,
+                                    aspectRatioY: 1
+                                },
+                                {
+                                    aspectRatioTitle: '16:9',
+                                    aspectRatioX: 16,
+                                    aspectRatioY: 9
+                                },
+                                {
+                                    aspectRatioTitle: '18:9',
+                                    aspectRatioX: 18,
+                                    aspectRatioY: 9
+                                }
+                            ]
+                        }
+                    });
                 })
                 .catch(function() {
                     // When user denies permission
                     console.log("User denied permissions");
                 });
+            } else {
+                this.cropImage({ lockSquare: true });
             }
         } else {
             if (!isAndroid) {
@@ -74,18 +99,46 @@ export class ImageCropperModel extends Observable {
         }
     };
 
-    cropImage(options) {
+    tapCameraActionCircular = function() {
+        if (camera.isAvailable()) {
+            if (isAndroid) {
+                permissions
+                .requestPermission([
+                    android.Manifest.permission.CAMERA,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ])
+                .then(() => {
+                    this.cropImage({ width: 300, height: 300, lockSquare: true, circularCrop: true });
+                })
+                .catch(function() {
+                    // When user denies permission
+                    console.log("User denied permissions");
+                });
+            } else {
+                this.cropImage({ width: 300, height: 300, lockSquare: true, circularCrop: true });
+            }
+        } else {
+            if (!isAndroid) {
+                // to make it work in iOS emulator
+                this.cropImage({ lockSquare: true, circularCrop: true });
+            }
+        }
+    };
+
+    cropImage(options, androidOptions) {
         camera
             .takePicture({
-                width: 500,
-                height: 500,
-                keepAspectRatio: true
+                width: 800,
+                keepAspectRatio: true,
+                saveToGallery: false,
+                cameraFacing: 'rear'
             })
             .then(imageAsset => {
-                let source = new imageSource.ImageSource();
+                let source = new ImageSource();
                 source.fromAsset(imageAsset).then(source => {
-                    this.imageCropper
-                        .show(source, options)
+                    setTimeout(async () => {
+                        this.imageCropper
+                        .show(source, options, androidOptions)
                         .then(args => {
                             console.dir(args);
                             if (args.image !== null) {
@@ -96,6 +149,7 @@ export class ImageCropperModel extends Observable {
                         .catch(function(e) {
                             console.dir(e);
                         });
+                    }, isAndroid ? 0 : 1000);
                 });
             })
             .catch(err => {

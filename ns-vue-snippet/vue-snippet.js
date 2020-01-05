@@ -1,8 +1,9 @@
 // Contributed by Lukas Park on 20 Oct 2017
 const Vue = require("./nativescript-vue");
-const ImageCropper = require("nativescript-imagecropper").ImageCropper;
+const ImageCropper = require("@proplugins/nativescript-imagecropper").ImageCropper;
 const camera = require("nativescript-camera");
-const imageSource = require("image-source");
+const imageSource = require("@nativescript/core/image-source");
+const isAndroid = require("@nativescript/platform").isAndroid;
 
 new Vue({
 	data: function() {
@@ -18,18 +19,54 @@ new Vue({
 	},
 	methods: {
 		do_capture: function() {
+			const options = { lockSquare: true };
+			const androidOptions = {
+				isFreeStyleCropEnabled: true,
+				statusBarColor: 'black',
+				setAspectRatioOptions: {
+						defaultIndex: 0,
+						aspectRatios: [
+								{
+										aspectRatioTitle: '1:1',
+										aspectRatioX: 1,
+										aspectRatioY: 1
+								},
+								{
+										aspectRatioTitle: '16:9',
+										aspectRatioX: 16,
+										aspectRatioY: 9
+								},
+								{
+										aspectRatioTitle: '18:9',
+										aspectRatioX: 18,
+										aspectRatioY: 9
+								}
+						]
+				}
+			};
 			var self = this;
-			camera.takePicture({width:300,height:300,keepAspectRatio:true})
+			camera.takePicture({
+				width: 800,
+				keepAspectRatio: true,
+				saveToGallery: false,
+				cameraFacing: 'rear'
+			})
 			.then((imageAsset) => {
 				let source = new imageSource.ImageSource();
 				source.fromAsset(imageAsset).then((picture) => {
-					var imageCropper = new ImageCropper();
-					imageCropper.show(picture).then(function(args){
-						self.image_src = args.image;
-					})
-					.catch(function(e){
-						console.log(e);
-					});
+					setTimeout(async () => {
+						imageCropper
+						.show(picture, options, androidOptions)
+						.then(args => {
+								console.dir(args);
+								if (args.image !== null) {
+									self.image_src = args.image;
+								}
+						})
+						.catch(function(e) {
+								console.dir(e);
+						});
+					}, isAndroid ? 0 : 1000);
 				});
 			}).catch((err) => {
 				console.log("Error -> " + err.message);

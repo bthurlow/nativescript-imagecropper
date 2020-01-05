@@ -1,4 +1,4 @@
-/* tslint:disable */
+
 declare class TOActivityCroppedImageProvider extends UIActivityItemProvider {
 
 	static alloc(): TOActivityCroppedImageProvider; // inherited from NSObject
@@ -28,11 +28,11 @@ declare class TOCropOverlayView extends UIView {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): TOCropOverlayView; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject>): TOCropOverlayView; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): TOCropOverlayView; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): TOCropOverlayView; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject>): TOCropOverlayView; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): TOCropOverlayView; // inherited from UIAppearance
 
 	static new(): TOCropOverlayView; // inherited from NSObject
 
@@ -55,11 +55,11 @@ declare class TOCropScrollView extends UIScrollView {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): TOCropScrollView; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject>): TOCropScrollView; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): TOCropScrollView; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): TOCropScrollView; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject>): TOCropScrollView; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): TOCropScrollView; // inherited from UIAppearance
 
 	static new(): TOCropScrollView; // inherited from NSObject
 
@@ -80,11 +80,11 @@ declare class TOCropToolbar extends UIView {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): TOCropToolbar; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject>): TOCropToolbar; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): TOCropToolbar; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): TOCropToolbar; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject>): TOCropToolbar; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): TOCropToolbar; // inherited from UIAppearance
 
 	static new(): TOCropToolbar; // inherited from NSObject
 
@@ -122,6 +122,8 @@ declare class TOCropToolbar extends UIView {
 
 	resetButtonEnabled: boolean;
 
+	resetButtonHidden: boolean;
+
 	resetButtonTapped: () => void;
 
 	readonly rotateButton: UIButton;
@@ -151,21 +153,27 @@ declare class TOCropView extends UIView {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): TOCropView; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject>): TOCropView; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): TOCropView; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): TOCropView; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject>): TOCropView; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): TOCropView; // inherited from UIAppearance
 
 	static new(): TOCropView; // inherited from NSObject
+
+	alwaysShowCroppingGrid: boolean;
 
 	angle: number;
 
 	aspectRatio: CGSize;
 
+	aspectRatioLockDimensionSwapEnabled: boolean;
+
 	aspectRatioLockEnabled: boolean;
 
 	readonly canBeReset: boolean;
+
+	cropAdjustingDelay: number;
 
 	readonly cropBoxAspectRatioIsPortrait: boolean;
 
@@ -175,11 +183,15 @@ declare class TOCropView extends UIView {
 
 	cropRegionInsets: UIEdgeInsets;
 
+	cropViewPadding: number;
+
 	readonly croppingStyle: TOCropViewCroppingStyle;
 
 	croppingViewsHidden: boolean;
 
 	delegate: TOCropViewDelegate;
+
+	readonly foregroundContainerView: UIView;
 
 	gridOverlayHidden: boolean;
 
@@ -193,9 +205,15 @@ declare class TOCropView extends UIView {
 
 	internalLayoutDisabled: boolean;
 
+	maximumZoomScale: number;
+
+	minimumAspectRatio: number;
+
 	resetAspectRatioEnabled: boolean;
 
 	simpleRenderMode: boolean;
+
+	translucencyAlwaysHidden: boolean;
 
 	constructor(o: { croppingStyle: TOCropViewCroppingStyle; image: UIImage; });
 
@@ -238,6 +256,8 @@ declare class TOCropViewController extends UIViewController {
 
 	activityItems: NSArray<any>;
 
+	allowedAspectRatios: NSArray<number>;
+
 	angle: number;
 
 	applicationActivities: NSArray<UIActivity>;
@@ -258,15 +278,21 @@ declare class TOCropViewController extends UIViewController {
 
 	customAspectRatio: CGSize;
 
+	customAspectRatioName: string;
+
 	delegate: TOCropViewControllerDelegate;
 
 	doneButtonTitle: string;
 
 	excludedActivityTypes: NSArray<string>;
 
+	hidesNavigationBar: boolean;
+
 	readonly image: UIImage;
 
 	imageCropFrame: CGRect;
+
+	minimumAspectRatio: number;
 
 	onDidCropImageToRect: (p1: CGRect, p2: number) => void;
 
@@ -278,11 +304,15 @@ declare class TOCropViewController extends UIViewController {
 
 	resetAspectRatioEnabled: boolean;
 
+	resetButtonHidden: boolean;
+
 	rotateButtonsHidden: boolean;
 
 	rotateClockwiseButtonHidden: boolean;
 
 	showActivitySheetOnDone: boolean;
+
+	showCancelConfirmationDialog: boolean;
 
 	readonly titleLabel: UILabel;
 

@@ -3,6 +3,7 @@
 .DS_Store
 *.js
 !ns-vue-snippet/vue-snippet.js
+!service-example/*.js
 *.js.map
 *.log
 src/*.d.ts

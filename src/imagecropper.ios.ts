@@ -1,6 +1,5 @@
-import * as frame from 'tns-core-modules/ui/frame';
-import { ImageSource } from 'tns-core-modules/image-source';
-import { OptionsCommon, Result } from './';
+import { Frame, ImageSource } from '@nativescript/core';
+import { OptionsAndroid, OptionsCommon, Result } from './';
 
 let _options: OptionsCommon;
 
@@ -22,6 +21,10 @@ class TOCropViewControllerDelegateImpl extends NSObject {
     // console.log("TOCropViewControllerDelegateImpl.initResolveReject");
     this._resolve = resolve;
     this._reject = reject;
+  }
+
+  public cropViewControllerDidCropToCircularImageWithRectAngle(cropViewController: TOCropViewController, image: UIImage, cropRect: CGRect, angle: number): void {
+    this.cropViewControllerDidCropToImageWithRectAngle(cropViewController, image, cropRect, angle);
   }
 
   public cropViewControllerDidCropToImageWithRectAngle(cropViewController: TOCropViewController, image: UIImage, cropRect: CGRect, angle: number): void {
@@ -93,17 +96,17 @@ class TOCropViewControllerDelegateImpl extends NSObject {
 }
 
 export class ImageCropper {
-  public show(image: ImageSource, options?: OptionsCommon): Promise<Result> {
+  public show(image: ImageSource, options: OptionsCommon = {}, androidOptions: OptionsAndroid = {}): Promise<Result> {
     // console.log("ImageCropper.show");
     return new Promise<Result>((resolve: (val: Result) => void, reject: (val: Result) => void) => {
       _options = options;
       if (image.ios) {
-        const viewController = TOCropViewController.alloc().initWithImage(image.ios);
+        const viewController = TOCropViewController.alloc().initWithCroppingStyleImage(options.circularCrop ? TOCropViewCroppingStyle.Circular : TOCropViewCroppingStyle.Default, image.ios); //initWithImage(image.ios);
         const delegate = TOCropViewControllerDelegateImpl.initWithOwner(new WeakRef(viewController));
         delegate.initResolveReject(resolve, reject);
         CFRetain(delegate);
         viewController.delegate = delegate;
-        let vc = frame.topmost().ios.controller;
+        let vc = Frame.topmost().ios.controller;
         let page = null;
         while (vc.presentedViewController
             && vc.presentedViewController.viewLoaded) {
@@ -113,7 +116,7 @@ export class ImageCropper {
         if (page === null) {
           page = vc;
         }
-        
+
         if (_options.lockSquare) {
           viewController.aspectRatioPreset = TOCropViewControllerAspectRatioPreset.PresetSquare;
           viewController.aspectRatioLockEnabled = true; // The crop box is locked to the aspect ratio and can't be resized away from it

@@ -1,20 +1,20 @@
-import * as application from 'tns-core-modules/application';
-import { ImageSource } from 'tns-core-modules/image-source';
-import * as fs from "tns-core-modules/file-system";
-import { OptionsCommon, Result } from './';
+import { Application, Color, Folder, ImageSource, knownFolders, path } from '@nativescript/core';
+import { AndroidApplication } from '@nativescript/core/application'
+import { OptionsAndroid, OptionsCommon, Result } from './';
 
 let _options: OptionsCommon;
-let ctx: android.content.Context = application.android.context;
+let ctx: android.content.Context = Application.android.context;
+declare var com: any;
 
 export class ImageCropper {
-  public show(image: ImageSource, options?: OptionsCommon): Promise<Result> {
+  public show(image: ImageSource, options: OptionsCommon = {}, androidOptions: OptionsAndroid = {}): Promise<Result> {
     return new Promise<Result>((resolve: (val: Result) => void, reject: (val: Result) => void) => {
       try {
         _options = options;
         if (image.android) {
           const sourcePathTemp: string = ImageCropper._storeImageSource(image);
-          const folder: fs.Folder = fs.knownFolders.temp();
-          const destinationPathTemp: string = fs.path.join(folder.path, "destTemp.jpeg");
+          const folder: Folder = knownFolders.temp();
+          const destinationPathTemp: string = path.join(folder.path, "destTemp.jpeg");
           if (sourcePathTemp == null) {
             ImageCropper._cleanFiles();
             reject({
@@ -41,7 +41,7 @@ export class ImageCropper {
                 console.error(e);
               }
               ImageCropper._cleanFiles();
-              application.android.off(application.AndroidApplication.activityResultEvent, onResult);
+              Application.android.off(AndroidApplication.activityResultEvent, onResult);
               if (is.android) {
                 resolve({
                   response: "Success",
@@ -57,7 +57,7 @@ export class ImageCropper {
             }
             else if (resultCode === android.app.Activity.RESULT_CANCELED && requestCode === com.yalantis.ucrop.UCrop.REQUEST_CROP) {
               ImageCropper._cleanFiles();
-              application.android.off(application.AndroidApplication.activityResultEvent, onResult);
+              Application.android.off(AndroidApplication.activityResultEvent, onResult);
               resolve({
                 response: "Cancelled",
                 image: null
@@ -68,7 +68,7 @@ export class ImageCropper {
               ImageCropper._cleanFiles();
               const cropError: java.lang.Throwable = com.yalantis.ucrop.UCrop.getError(data);
               console.log(cropError.getMessage());
-              application.android.off(application.AndroidApplication.activityResultEvent, onResult);
+              Application.android.off(AndroidApplication.activityResultEvent, onResult);
               reject({
                 response: "Error",
                 image: null
@@ -77,7 +77,79 @@ export class ImageCropper {
             }
           };
 
-          application.android.on(application.AndroidApplication.activityResultEvent, onResult);
+          Application.android.on(AndroidApplication.activityResultEvent, onResult);
+
+          const options = new com.yalantis.ucrop.UCrop.Options();
+          options.setCircleDimmedLayer(!!_options.circularCrop);
+          options.setFreeStyleCropEnabled(!!androidOptions.isFreeStyleCropEnabled);
+          if (typeof androidOptions.isFreeStyleCropEnabled === 'boolean') {
+            options.setShowCropGrid(androidOptions.isFreeStyleCropEnabled);
+          }
+          if (typeof androidOptions.showCropFrame === 'boolean') {
+            options.setShowCropFrame(androidOptions.showCropFrame);
+          }
+          if (typeof androidOptions.hideBottomControls === 'boolean') {
+            options.setHideBottomControls(androidOptions.hideBottomControls);
+          }
+          options.setToolbarTitle(androidOptions.toolbarTitle ? androidOptions.toolbarTitle : 'Crop Image');
+
+          if (typeof androidOptions.toolbarTextColor === 'string') {
+            options.setToolbarWidgetColor(new Color(androidOptions.toolbarTextColor).android);
+          }
+          if (typeof androidOptions.toolbarColor === 'string') {
+            options.setToolbarColor(new Color(androidOptions.toolbarColor).android);
+          }
+          if (typeof androidOptions.rootViewBackgroundColor === 'string') {
+            options.setRootViewBackgroundColor(new Color(androidOptions.rootViewBackgroundColor).android);
+          }
+          if (typeof androidOptions.logoColor === 'string') {
+            options.setLogoColor(new Color(androidOptions.logoColor).android);
+          }
+          if (typeof androidOptions.statusBarColor === 'string') {
+            options.setStatusBarColor(new Color(androidOptions.statusBarColor).android);
+          }
+          if (typeof androidOptions.cropGridColor === 'string') {
+            options.setCropGridColor(new Color(androidOptions.cropGridColor).android);
+          }
+          if (typeof androidOptions.cropFrameColor === 'string') {
+            options.setCropFrameColor(new Color(androidOptions.cropFrameColor).android);
+          }
+          if (typeof androidOptions.dimmedLayerColor === 'string') {
+            options.setDimmedLayerColor(new Color(androidOptions.dimmedLayerColor).android);
+          }
+          if (typeof androidOptions.cropGridRowCount === 'number') {
+            options.setCropGridRowCount(androidOptions.cropGridRowCount);
+          }
+          if (typeof androidOptions.cropGridColumnCount === 'number') {
+            options.setCropGridColumnCount(androidOptions.cropGridColumnCount);
+          }
+          if (typeof androidOptions.cropFrameStrokeWidth === 'number') {
+            options.setCropFrameStrokeWidth(androidOptions.cropFrameStrokeWidth);
+          }
+          if (typeof androidOptions.cropGridStrokeWidth === 'number') {
+            options.setCropGridStrokeWidth(androidOptions.cropGridStrokeWidth);
+          }
+          if (typeof androidOptions.compressionQuality === 'number' && androidOptions.compressionQuality >= 0
+            && androidOptions.compressionQuality <= 100) {
+            options.setCompressionQuality(androidOptions.compressionQuality);
+          }
+          if (typeof androidOptions.toolbarCropDrawable !== 'undefined') {
+            options.setToolbarCropDrawable(androidOptions.toolbarCropDrawable);
+          }
+          if (typeof androidOptions.toolbarCancelDrawable !== 'undefined') {
+            options.setToolbarCancelDrawable(androidOptions.toolbarCancelDrawable);
+          }
+          if (typeof androidOptions.setAspectRatioOptions !== 'undefined') {
+            const aspectRatios = [];
+            androidOptions.setAspectRatioOptions.aspectRatios.forEach(ratio => {
+              aspectRatios.push(new com.yalantis.ucrop.model.AspectRatio(
+                  ratio.aspectRatioTitle,
+                  ratio.aspectRatioX,
+                  ratio.aspectRatioY
+                ));
+            });
+            options.setAspectRatioOptions(androidOptions.setAspectRatioOptions.defaultIndex, aspectRatios);
+          }
 
           if (_options && _options.width && _options.height) {
             const gcd = ImageCropper._gcd(_options.width, _options.height);
@@ -86,23 +158,25 @@ export class ImageCropper {
             com.yalantis.ucrop.UCrop.of(sourcePath, destinationPath)
               .withAspectRatio(_options.width / gcd, _options.height / gcd)
               .withMaxResultSize(_options.width, _options.height)
+              .withOptions(options)
               .start(ImageCropper._getContext());
           }
           else {
             com.yalantis.ucrop.UCrop.of(sourcePath, destinationPath)
-              // .useSourceImageAspectRatio()
+              .withOptions(options)
               .start(ImageCropper._getContext());
           }
         }
         else {
-          // application.android.off(application.AndroidApplication.activityResultEvent, this.onResult);
+          // Application.android.off(AndroidApplication.activityResultEvent, this.onResult);
           reject({
             response: "Error",
             image: null
           });
         }
       } catch (e) {
-        // application.android.off(application.AndroidApplication.activityResultEvent, this.onResult);
+        console.log(e);
+        // Application.android.off(AndroidApplication.activityResultEvent, this.onResult);
         reject({
           response: "Error",
           image: null
@@ -120,11 +194,11 @@ export class ImageCropper {
   }
 
   private static _storeImageSource(image: ImageSource): string {
-    const folder: fs.Folder = fs.knownFolders.temp();
-    const path = fs.path.join(folder.path, "temp.jpeg");
+    const folder: Folder = knownFolders.temp();
+    const savePath = path.join(folder.path, "temp.jpeg");
 
-    if (image.saveToFile(path, "jpeg", 100)) {
-      return path;
+    if (image.saveToFile(savePath, "jpeg", 100)) {
+      return savePath;
     }
     else {
       return null;
@@ -133,11 +207,11 @@ export class ImageCropper {
 
   private static _cleanFiles(): void {
     // Clear Temp
-    const folder: fs.Folder = fs.knownFolders.temp();
+    const folder: Folder = knownFolders.temp();
     folder.clear();
   }
 
   private static _getContext(): android.app.Activity {
-    return application.android.foregroundActivity;
+    return Application.android.foregroundActivity;
   }
 }
