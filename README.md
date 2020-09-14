@@ -27,7 +27,11 @@ hence the breaking change
 
 ## Installation
 
-Run `tns plugin add nativescript-imagecropper`
+### NativeScript 7+:
+Run `ns plugin add nativescript-imagecropper`
+
+### NativeScript below 7:
+Run `tns plugin add nativescript-imagecropper@3.0.0`
 
 ## Screenshots
 

@@ -1,9 +1,9 @@
 // Contributed by Lukas Park on 20 Oct 2017
 const Vue = require("./nativescript-vue");
-const ImageCropper = require("@proplugins/nativescript-imagecropper").ImageCropper;
+const ImageCropper = require("nativescript-imagecropper").ImageCropper;
 const camera = require("nativescript-camera");
 const imageSource = require("@nativescript/core/image-source");
-const isAndroid = require("@nativescript/platform").isAndroid;
+const isAndroid = require("@nativescript/core/platform").isAndroid;
 
 new Vue({
 	data: function() {

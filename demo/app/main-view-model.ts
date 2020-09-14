@@ -1,16 +1,11 @@
-import { Observable } from "@nativescript/core/data/observable";
+import * as camera from "@nativescript/camera";
+import { Frame, ImageSource, isAndroid, Observable } from "@nativescript/core";
 import { ImageCropper, OptionsAndroid } from "nativescript-imagecropper";
-import * as camera from "nativescript-camera";
 import * as permissions from "nativescript-permissions";
-import { Frame } from "@nativescript/core/ui/frame";
-import { ImageSource } from "@nativescript/core/image-source";
-import { isAndroid } from "@nativescript/core/platform";
 
-declare var android: any;
 
 export class ImageCropperModel extends Observable {
     private imageCropper: ImageCropper;
-    private imageSource: ImageSource;
     private croppedImage;
 
     constructor() {
@@ -32,7 +27,7 @@ export class ImageCropperModel extends Observable {
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ])
                 .then(() => {
-                    console.log('passing isFreeStyleCropEnabled as true')
+                    console.log('passing isFreeStyleCropEnabled as true');
                     this.cropImage({ lockSquare: true }, <OptionsAndroid>{
                         isFreeStyleCropEnabled: true,
                         statusBarColor: 'black',
@@ -99,7 +94,7 @@ export class ImageCropperModel extends Observable {
         }
     };
 
-    tapCameraActionCircular = function() {
+    tapCameraActionCircular = function () {
         if (camera.isAvailable()) {
             if (isAndroid) {
                 permissions
@@ -134,8 +129,7 @@ export class ImageCropperModel extends Observable {
                 cameraFacing: 'rear'
             })
             .then(imageAsset => {
-                let source = new ImageSource();
-                source.fromAsset(imageAsset).then(source => {
+                ImageSource.fromAsset(imageAsset).then(source => {
                     setTimeout(async () => {
                         this.imageCropper
                         .show(source, options, androidOptions)
