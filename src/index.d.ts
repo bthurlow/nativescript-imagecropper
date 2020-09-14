@@ -1,4 +1,4 @@
-import { ImageSource } from 'tns-core-modules/image-source';
+import { ImageSource } from '@nativescript/core';
 
 export interface OptionsCommon {
   width?: number;
@@ -8,14 +8,14 @@ export interface OptionsCommon {
 }
 
 export interface AspectRatio {
-  aspectRatioTitle: string,
-  aspectRatioX: number,
+  aspectRatioTitle: string;
+  aspectRatioX: number;
   aspectRatioY: number;
 }
 
 export interface AspectRatioOptions {
   defaultIndex: number;
-  aspectRatios: AspectRatio[]
+  aspectRatios: AspectRatio[];
 }
 export interface OptionsAndroid {
   isFreeStyleCropEnabled?: boolean; // set to true to let user resize crop bounds (disabled by default)

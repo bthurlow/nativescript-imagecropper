@@ -3,6 +3,7 @@ import { OptionsAndroid, OptionsCommon, Result } from './';
 
 let _options: OptionsCommon;
 
+@NativeClass()
 class TOCropViewControllerDelegateImpl extends NSObject {
   private _resolve: (val: Result) => void;
   private _reject: (val: Result) => void;
@@ -12,7 +13,7 @@ class TOCropViewControllerDelegateImpl extends NSObject {
 
   public static initWithOwner(owner: WeakRef<TOCropViewController>): TOCropViewControllerDelegateImpl {
     // console.log("TOCropViewControllerDelegateImpl.initWithOwner");
-    let handler = <TOCropViewControllerDelegateImpl>TOCropViewControllerDelegateImpl.new();
+    const handler = <TOCropViewControllerDelegateImpl>TOCropViewControllerDelegateImpl.new();
     handler._owner = owner;
     return handler;
   }
@@ -101,7 +102,7 @@ export class ImageCropper {
     return new Promise<Result>((resolve: (val: Result) => void, reject: (val: Result) => void) => {
       _options = options;
       if (image.ios) {
-        const viewController = TOCropViewController.alloc().initWithCroppingStyleImage(options.circularCrop ? TOCropViewCroppingStyle.Circular : TOCropViewCroppingStyle.Default, image.ios); //initWithImage(image.ios);
+        const viewController = TOCropViewController.alloc().initWithCroppingStyleImage(options.circularCrop ? TOCropViewCroppingStyle.Circular : TOCropViewCroppingStyle.Default, image.ios); // initWithImage(image.ios);
         const delegate = TOCropViewControllerDelegateImpl.initWithOwner(new WeakRef(viewController));
         delegate.initResolveReject(resolve, reject);
         CFRetain(delegate);

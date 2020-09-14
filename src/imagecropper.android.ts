@@ -1,9 +1,7 @@
-import { Application, Color, Folder, ImageSource, knownFolders, path } from '@nativescript/core';
-import { AndroidApplication } from '@nativescript/core/application'
+import { AndroidApplication, Application, Color, Folder, ImageSource, knownFolders, path } from '@nativescript/core';
 import { OptionsAndroid, OptionsCommon, Result } from './';
 
 let _options: OptionsCommon;
-let ctx: android.content.Context = Application.android.context;
 declare var com: any;
 
 export class ImageCropper {

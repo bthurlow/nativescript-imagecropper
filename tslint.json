@@ -19,6 +19,7 @@
             "check-open-brace",
             "check-whitespace"
         ],
+        "prefer-const": true,
         "quotemark": [
             false,
             "double"
