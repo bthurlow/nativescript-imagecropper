@@ -30,7 +30,7 @@ class TOCropViewControllerDelegateImpl extends NSObject {
 
   public cropViewControllerDidCropToImageWithRectAngle(cropViewController: TOCropViewController, image: UIImage, cropRect: CGRect, angle: number): void {
     // console.log("TOCropViewControllerDelegateImpl.cropViewControllerDidCropToImageWithRectAngle");
-    cropViewController.dismissViewControllerAnimatedCompletion(true, null);
+    cropViewController.dismissViewControllerAnimatedCompletion(false, null);
     if (image) {
       const imgSrc = new ImageSource();
       if (_options && _options.width && _options.height) {
@@ -107,16 +107,12 @@ export class ImageCropper {
         delegate.initResolveReject(resolve, reject);
         CFRetain(delegate);
         viewController.delegate = delegate;
+        
         let vc = Frame.topmost().ios.controller;
-        let page = null;
-        while (vc.presentedViewController
-            && vc.presentedViewController.viewLoaded) {
-            vc = vc.presentedViewController;
-            if (!vc.beingDismissed) page = vc;
-        }
-        if (page === null) {
-          page = vc;
-        }
+        const keyWindow = UIApplication.sharedApplication.keyWindow;
+        let root = keyWindow.rootViewController;
+        let presented = root.presentedViewController;
+        let page = presented ? presented : root;
 
         if (_options.lockSquare) {
           viewController.aspectRatioPreset = TOCropViewControllerAspectRatioPreset.PresetSquare;
@@ -124,7 +120,7 @@ export class ImageCropper {
           viewController.aspectRatioPickerButtonHidden = true;
           viewController.resetAspectRatioEnabled = false;
         }
-        page.presentViewControllerAnimatedCompletion(viewController, true, function () {
+        page.presentViewControllerAnimatedCompletion(viewController, false, function () {
           if (_options) {
             if (_options.width && _options.height) {
               const gcd = ImageCropper._gcd(_options.width, _options.height);
