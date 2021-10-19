@@ -1,0 +1,12 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" shownModally="onShownModally">
+    <ScrollView>
+      <StackLayout class="p-20">
+        <Label text="Testing cropped inside Modal" class="title" textWrap="true"/>
+        <Button class="-primary" text="Camera" tap="{{ tapCameraAction }}" />
+        <Button class="-primary" text="Camera with Resize" tap="{{ tapCameraActionResize }}" />
+        <Button class="-primary" height="70" textWrap="true" text="Camera with Circular [Crop - iOS] [Mask - Android]" tap="{{ tapCameraActionCircular }}" />
+        <Button class="-primary" text="Close modal" tap="closeModal" textWrap="true" />
+        <Image id="croppedImage2" />
+      </StackLayout>
+    </ScrollView>
+</Page>

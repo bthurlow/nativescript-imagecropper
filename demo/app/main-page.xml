@@ -3,9 +3,10 @@
   <ScrollView>
     <StackLayout class="p-20">
       <Label text="nativescript-imagecropper demo" class="title" textWrap="true"/>
-      <Button class="btn btn-primary" text="Camera" tap="{{ tapCameraAction }}" />
-      <Button class="btn btn-primary" text="Camera with Resize" tap="{{ tapCameraActionResize }}" />
-      <Button class="btn btn-primary" textWrap="true" text="Camera with Circular [Crop - iOS] [Mask - Android]" tap="{{ tapCameraActionCircular }}" />
+      <Button class="-primary" text="Camera" tap="{{ tapCameraAction }}" />
+      <Button class="-primary" text="Camera with Resize" tap="{{ tapCameraActionResize }}" />
+      <Button class="-primary" height="70" textWrap="true" text="Camera with Circular [Crop - iOS] [Mask - Android]" tap="{{ tapCameraActionCircular }}" />
+      <Button class="-primary" text="Open modal" tap="openModal" textWrap="true" />
       <Image id="croppedImage" />
     </StackLayout>
   </ScrollView>

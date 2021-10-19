@@ -8,13 +8,14 @@ export class ImageCropperModel extends Observable {
     private imageCropper: ImageCropper;
     private croppedImage;
 
-    constructor() {
+    constructor(page, croppedImgId) {
         super();
 
         this.imageCropper = new ImageCropper();
 
         setTimeout(() => {
-            this.croppedImage = Frame.topmost().getViewById("croppedImage");
+            this.croppedImage = page.getViewById(croppedImgId);
+            console.log('using cropped img id', croppedImgId, this.croppedImage);
         }, 1000);
     }
 
