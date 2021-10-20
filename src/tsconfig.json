@@ -22,7 +22,7 @@
         "noFallthroughCasesInSwitch": true,
         "skipLibCheck": true,
         "plugins": [{
-            "transform": "@nativescript/webpack/transformers/ns-transform-native-classes",
+            "transform": "@nativescript/webpack/dist/transformers/NativeClass",
             "type": "raw"
         }]
     },
